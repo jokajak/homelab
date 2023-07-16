@@ -1,2 +1,3 @@
 # homelab
-Home lab orchestration
+
+This repository contains my homelab orchestration and notes.
