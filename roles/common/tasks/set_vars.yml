@@ -1,0 +1,10 @@
+---
+- name: Set platform/version specific variables
+  ansible.builtin.include_vars: '{{ __common_vars_file }}'
+  loop:
+  - "{{ ansible_facts['os_family'] }}.yml"
+  - "{{ ansible_facts['distribution'] }}.yml"
+  - "{{ ansible_facts['distribution'] }}_{{ ansible_facts['distribution_major_version'] }}.yml"
+  vars:
+    __common_vars_file: "{{ role_path }}/vars/{{ item }}"
+  when: __common_vars_file is file

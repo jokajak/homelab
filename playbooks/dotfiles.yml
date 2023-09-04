@@ -1,0 +1,36 @@
+---
+# Playbook to set up dotfiles
+- name: Configure dotfiles
+  hosts: all
+  gather_facts: true
+  tasks:
+  - name: Clone dotfiles
+    ansible.builtin.git:
+      repo: 'https://github.com/jokajak/dotfiles.git'
+      dest: '/home/josh/.dotfiles'
+      recursive: true
+      update: true
+      accept_hostkey: true
+      version: main
+
+  - name: Deploy dotfiles
+    vars:
+      user_home: '/home/josh'
+    environment:
+      STOW_DIR: "{{ user_home }}/.dotfiles"
+    ansible.builtin.command: stow {{ item }}
+    changed_when: false
+    loop: '{{ dotfiles }}'
+
+  - name: Configure git
+    community.general.git_config:
+      name: '{{ item.name }}'
+      scope: global
+      value: '{{ item.value }}'
+    loop:
+    - name: user.name
+      value: Josh
+    - name: user.email
+      value: jokajak@gmail.com
+    - name: core.editor
+      value: nvim

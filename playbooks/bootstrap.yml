@@ -1,0 +1,25 @@
+---
+# This playbook is used to bootstrap an system for ansible management
+# The intent is to set up a user for ansible to use to manage the system
+- name: Prepare to bootstrap a system for ansible management
+  hosts: localhost
+  gather_facts: false
+  become: false
+  vars_prompt:
+  - name: host
+    prompt: Enter the hostname for the system (var=host)
+    private: false
+  pre_tasks:
+  - name: Add temporary host
+    ansible.builtin.add_host:
+      host: _to_bootstrap
+      ansible_host: '{{ host }}'
+
+- name: Bootstrap the system
+  hosts: _to_bootstrap
+  gather_facts: false
+  become: false
+  tasks:
+  - name: Bootstrap the system
+    ansible.builtin.import_role:
+      name: bootstrap

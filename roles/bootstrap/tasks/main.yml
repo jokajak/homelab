@@ -1,0 +1,76 @@
+---
+# tasks file for bootstrap
+- name: Ensure ansible_facts used by role
+  setup:
+    gather_subset: min
+  when: not ansible_facts.keys() | list |
+    intersect(__bootstrap_required_facts) == __bootstrap_required_facts
+# set up variables
+- name: Set platform/version specific variables
+  ansible.builtin.include_vars: '{{ __common_vars_file }}'
+  loop:
+  - "{{ ansible_facts['os_family'] }}.yml"
+  - "{{ ansible_facts['distribution'] }}.yml"
+  - "{{ ansible_facts['distribution'] }}_{{ ansible_facts['distribution_major_version'] }}.yml"
+  vars:
+    __common_vars_file: "{{ role_path }}/vars/{{ item }}"
+  when: __common_vars_file is file
+
+- name: Check that we can become root with sudo
+  become: true
+  become_method: ansible.builtin.sudo
+  ansible.builtin.ping:
+  register: _bootstrap_sudo_result
+  ignore_errors: true
+
+- name: Check that we can become root with su
+  when: _bootstrap_sudo_result is failed
+  become_method: ansible.builtin.su
+  ansible.builtin.ping:
+  register: _bootstrap_su_result
+
+- name: Install sudo
+  when:
+  - _bootstrap_sudo_result is failed
+  - _bootstrap_sudo_result.rc == 127
+  become_method: ansible.builtin.su
+  become: true
+  package:
+    name:
+    - sudo
+    state: present
+
+- name: Ensure orchestration user
+  become: true
+  become_method: '{{ __bootstrap_become_method }}'
+  ansible.builtin.user:
+    name: ansible_svc
+    state: present
+    groups: '{{ bootstrap_sudo_groups }}'
+
+- name: Ensure sshkey auth is enabled
+  become: true
+  become_method: '{{ __bootstrap_become_method }}'
+  ansible.posix.authorized_key:
+    user: ansible_svc
+    state: present
+    key: '{{ lookup("file", bootstrap_pubkey) }}'
+
+- name: Allow ansible_svc can sudo
+  become: true
+  become_method: '{{ __bootstrap_become_method }}'
+  community.general.sudoers:
+    name: ansible_svc
+    state: present
+    user: ansible_svc
+    nopassword: true
+    commands: ALL
+
+- name: Update connection credentials
+  set_fact:
+    ansible_user: ansible_svc
+
+- name: Ensure sudo works
+  become: true
+  become_method: ansible.builtin.sudo
+  ping:

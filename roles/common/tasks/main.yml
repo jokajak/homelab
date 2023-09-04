@@ -1,0 +1,48 @@
+---
+# tasks file for common
+- name: Set platform/version specific variables
+  ansible.builtin.include_tasks: '{{ role_path }}/tasks/set_vars.yml'
+
+- name: Perform platform/version specific tasks
+  ansible.builtin.include_tasks: "{{ lookup('first_found', __common_ff_params) }}"
+  vars:
+    __common_ff_params:
+      files:
+      - "{{ ansible_facts['distribution'] }}_{{ ansible_facts['distribution_major_version'] }}.yml"
+      - "{{ ansible_facts['distribution'] }}.yml"
+      - "{{ ansible_facts['os_family'] }}.yml"
+      - default.yml
+      paths:
+      - "{{ role_path }}/tasks/setup"
+      skip: true
+
+- name: Clone dotfiles
+  ansible.builtin.git:
+    repo: 'https://github.com/jokajak/dotfiles.git'
+    dest: '/home/josh/.dotfiles'
+    recursive: true
+    update: true
+    accept_hostkey: true
+    version: main
+
+- name: Deploy dotfiles
+  vars:
+    user_home: '/home/josh'
+  environment:
+    STOW_DIR: "{{ user_home }}/.dotfiles"
+  ansible.builtin.command: stow {{ item }}
+  changed_when: false
+  loop: '{{ dotfiles }}'
+
+- name: Configure git
+  community.general.git_config:
+    name: '{{ item.name }}'
+    scope: global
+    value: '{{ item.value }}'
+  loop:
+  - name: user.name
+    value: Josh
+  - name: user.email
+    value: jokajak@gmail.com
+  - name: core.editor
+    value: nvim

@@ -1,0 +1,9 @@
+---
+# Setup fallback tasks
+- name: Display relevant variables
+  ansible.builtin.debug:
+    msg: |
+      Unknown variables:
+      distribution_major_version: "{{ ansible_facts['distribution'] }}_{{ ansible_facts['distribution_major_version'] }}.yml"
+      distribution: "{{ ansible_facts['distribution'] }}"
+      os_family: "{{ ansible_facts['os_family'] }}"

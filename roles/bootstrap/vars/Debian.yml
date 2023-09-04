@@ -1,0 +1,5 @@
+---
+# bootstrap variables for Debian
+bootstrap_sudo_groups:
+- adm
+- sudo

@@ -1,0 +1,9 @@
+---
+# Ansible playbook for configuring all managed systems
+- name: Perform common configuration tasks
+  hosts: all
+  gather_facts: true
+  tasks:
+  - name: Ensure common configuration
+    ansible.builtin.import_role:
+      name: common

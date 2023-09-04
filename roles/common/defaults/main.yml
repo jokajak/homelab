@@ -1,0 +1,22 @@
+---
+# defaults file for common
+common_linux_packages:
+- acl
+- fzf
+- git
+- stow
+- sudo
+- tmux
+- zsh
+
+dotfiles:
+- neovim
+- starship
+- tmux
+- wezterm
+- zsh
+
+common_default_debian_packages:
+- vim
+
+common_debian_packages: '{{ common_linux_packages + common_default_debian_packages }}'

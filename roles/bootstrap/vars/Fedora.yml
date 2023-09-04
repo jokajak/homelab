@@ -1,0 +1,5 @@
+---
+# bootstrap variables for Fedora
+bootstrap_sudo_groups:
+- adm
+- wheel

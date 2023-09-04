@@ -1,0 +1,7 @@
+---
+# variables for bootstrap role
+__bootstrap_required_facts:
+- os_family
+- distribution
+
+__bootstrap_become_method: '{{ "ansible.builtin.su" if _bootstrap_sudo_result is failed else "ansible.builtin.sudo" }}'
