@@ -1,0 +1,42 @@
+---
+# ansible playbook to generate an ignition file
+- name: Generate an ignition file
+  hosts: localhost
+  vars_prompt:
+  - name: ignition_hostname
+    prompt: Name of the new host (var=ignition_hostname)
+    private: false
+  - name: pubkey
+    prompt: Path to ssh pubkey (var=pubkey)
+    private: false
+  pre_tasks:
+  - name: Make sure pubkey exists
+    assert:
+      that:
+      - pubkey is file
+  tasks:
+  - name: Generate butane config
+    ansible.builtin.import_role:
+      name: ignition
+    vars:
+      ignition_ssh_pubkey: '{{ lookup("file", pubkey) }}'
+
+  - name: Generate ignition file
+    debug:
+      msg: podman
+
+  - name: Run installer
+    when: ignition_disk is defined
+    debug:
+      msg: |
+        STREAM=stable # or `next` or `testing`
+        sudo coreos-installer install -a aarch64 -s $STREAM -i {{ ignition_hostname }}.ign {{ ignition_disk }}
+
+  - name: Run installer from container
+    when: ignition_disk is defined
+    debug:
+      msg: |
+        sudo podman run --pull=always --privileged --rm \
+            -v /dev:/dev -v /run/udev:/run/udev -v .:/data -w /data \
+            quay.io/coreos/coreos-installer:release \
+            install {{ ignition_disk }} -i {{ ignition_hostname }}.ign

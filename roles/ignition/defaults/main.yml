@@ -1,0 +1,248 @@
+---
+# defaults for ignition role
+ignition_butane_version: 1.4.0
+ignition_users:
+- name: core
+  ssh_authorized_keys:
+  - '{{ ignition_ssh_pubkey }}'
+  groups:
+  - wheel
+  - sudo
+- name: josh
+  ssh_authorized_keys:
+  - '{{ ignition_ssh_pubkey }}'
+  groups:
+  - wheel
+  - sudo
+- name: ansible_svc
+  ssh_authorized_keys:
+  - '{{ ignition_ssh_pubkey }}'
+  groups:
+  - wheel
+  - sudo
+
+ignition_systemd_units:
+# This installs k3s dependencies on boot
+- name: "rpm-ostree-install-k3s-dependencies.service"
+  enabled: true
+  contents: |
+    [Unit]
+    Description=Install k3s dependencies
+    Wants=network-online.target
+    After=network-online.target
+    # We run before `zincati.service` to avoid conflicting rpm-ostree
+    # transactions.
+    Before=zincati.service
+    ConditionPathExists=|!/usr/bin/kubectl
+    ConditionPathExists=|!/usr/share/selinux/packages/k3s.pp
+
+    [Service]
+    Type=oneshot
+    RemainAfterExit=yes
+    ExecStart=rpm-ostree install --apply-live --allow-inactive --assumeyes kubectl k3s-selinux
+
+    [Install]
+    WantedBy=multi-user.target
+- name: "k3s.service"
+  enabled: true
+  contents: |
+    [Unit]
+    Description=Run K3s
+    Wants=network-online.target
+    After=network-online.target
+
+    [Service]
+    Type=notify
+    EnvironmentFile=-/etc/default/%N
+    EnvironmentFile=-/etc/sysconfig/%N
+    EnvironmentFile=-/etc/systemd/system/%N.env
+    KillMode=process
+    Delegate=yes
+    LimitNOFILE=1048576
+    LimitNPROC=infinity
+    LimitCORE=infinity
+    TasksMax=infinity
+    TimeoutStartSec=0
+    Restart=always
+    RestartSec=5s
+    ExecStartPre=-/sbin/modprobe br_netfilter
+    ExecStartPre=-/sbin/modprobe overlay
+    ExecStart=/usr/local/bin/k3s server --kubelet-arg="config=/etc/rancher/k3s/kubelet.config"
+
+    [Install]
+    WantedBy=multi-user.target
+# Node shutdown leaves pods with status.phase=Failed and status.reason=Shutdown,
+# so delete them automatically on startup.
+# This may delete some pods that failed for other reasons, but --field-selector doesn't
+# currently support status.reason, so it's the best we can do.
+- name: "k3s-cleanup-shutdown-pods.service"
+  enabled: true
+  contents: |
+    [Unit]
+    Description=Cleanup pods terminated by node shutdown
+    Wants=k3s.service
+
+    [Service]
+    Type=oneshot
+    Environment=KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+    ExecStart=kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
+    Restart=on-failure
+    RestartSec=30
+
+    [Install]
+    WantedBy=multi-user.target
+# Installing vim as a layered package with rpm-ostree
+- name: rpm-ostree-install-vim.service
+  enabled: true
+  contents: |
+    [Unit]
+    Description=Layer vim with rpm-ostree
+    Wants=network-online.target
+    After=network-online.target
+    # We run before `zincati.service` to avoid conflicting rpm-ostree
+    # transactions.
+    Before=zincati.service
+    ConditionPathExists=!/var/lib/%N.stamp
+
+    [Service]
+    Type=oneshot
+    RemainAfterExit=yes
+    # `--allow-inactive` ensures that rpm-ostree does not return an error
+    # if the package is already installed. This is useful if the package is
+    # added to the root image in a future Fedora CoreOS release as it will
+    # prevent the service from failing.
+    ExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive vim
+    ExecStart=/bin/touch /var/lib/%N.stamp
+
+    [Install]
+    WantedBy=multi-user.target
+# Installing wezterm as a layered package with rpm-ostree
+- name: rpm-ostree-install-wezterm.service
+  enabled: true
+  contents: |
+    [Unit]
+    Description=Layer wezterm with rpm-ostree
+    Wants=network-online.target
+    After=network-online.target
+    # We run before `zincati.service` to avoid conflicting rpm-ostree
+    # transactions.
+    Before=zincati.service
+    ConditionPathExists=!/var/lib/%N.stamp
+
+    [Service]
+    Type=oneshot
+    RemainAfterExit=yes
+    # `--allow-inactive` ensures that rpm-ostree does not return an error
+    # if the package is already installed. This is useful if the package is
+    # added to the root image in a future Fedora CoreOS release as it will
+    # prevent the service from failing.
+    ExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive wezterm
+    ExecStart=/bin/touch /var/lib/%N.stamp
+
+    [Install]
+    WantedBy=multi-user.target
+storage:
+  files:
+    # Set vim as default editor
+    # We use `zz-` as prefix to make sure this is processed last in order to
+    # override any previously set defaults.
+    - path: /etc/profile.d/zz-default-editor.sh
+      overwrite: true
+      contents:
+        inline: |
+          export EDITOR=vim
+
+ignition_storage_disks:
+- # The link to the block device the OS was booted from.
+  device: /dev/disk/by-id/coreos-boot-disk
+  # We do not want to wipe the partition table since this is the primary
+  # device.
+  wipe_table: false
+  partitions:
+  - number: 4
+    label: root
+    size_mib: 16384
+    resize: true
+  - size_mib: 0
+    # We assign a descriptive label to the partition. This is important
+    # for referring to it in a device-agnostic way in other parts of the
+    # configuration.
+    label: var
+
+ignition_storage_filesystems:
+- path: /var
+  label: var
+  device: /dev/disk/by-partlabel/var
+  # We can select the filesystem we'd like.
+  format: xfs
+  # Ask Butane to generate a mount unit for us so that this filesystem
+  # gets mounted in the real root.
+  with_mount_unit: true
+  wipe_filesystem: false # preserve /var on reinstall (this is the default, but be explicit)
+
+ignition_storage_files:
+- path: /etc/yum.repos.d/kubernetes.repo
+  mode: 0644
+  contents:
+    inline: |
+      [kubernetes]
+      name=Kubernetes
+      baseurl=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
+      exclude=kubelet kubeadm cri-tools kubernetes-cni
+- path: /etc/yum.repos.d/rancher-k3s-common.repo
+  mode: 0644
+  contents:
+    inline: |
+      [rancher-k3s-common-stable]
+      name=Rancher K3s Common (stable)
+      baseurl=https://rpm.rancher.io/k3s/stable/common/centos/8/noarch
+      enabled=1
+      gpgcheck=1
+      repo_gpgcheck=0
+      gpgkey=https://rpm.rancher.io/public.key
+- path: /usr/local/bin/k3s
+  overwrite: true
+  mode: 0755
+  contents:
+    source: "https://github.com/k3s-io/k3s/releases/download/v1.27.4%2Bk3s1/k3s"
+    verification:
+      # for x86_64
+      hash: "sha256-7438aade7f5aaab3904f95333b67aa072cee28fa06748b6ee66ebcbd3e5b6bd3"
+- path: /etc/rancher/k3s/kubelet.config
+  mode: 0644
+  contents:
+    inline: |
+      apiVersion: kubelet.config.k8s.io/v1beta1
+      kind: KubeletConfiguration
+      shutdownGracePeriod: 60s
+      shutdownGracePeriodCriticalPods: 10s
+# Schedule automatic updates for 4am PT = 12pm UTC on weekends.
+- path: /etc/zincati/config.d/55-updates-strategy.toml
+  contents:
+    inline: |
+      [updates]
+      strategy = "periodic"
+      [[updates.periodic.window]]
+      days = [ "Saturday", "Sunday" ]
+      start_time = "22:00"
+      length_minutes = 120
+- path: /etc/zincati/config.d/51-rollout-wariness.toml
+  contents:
+    inline: |
+      [identity]
+      rollout_wariness = 0.25
+- path: /etc/hostname
+  mode: 0644
+  contents:
+    inline: '{{ ignition_hostname }}'
+# Set vim as default editor
+# We use `zz-` as prefix to make sure this is processed last in order to
+# override any previously set defaults.
+- path: /etc/profile.d/zz-default-editor.sh
+  overwrite: true
+  contents:
+    inline: |
+      export EDITOR=vim

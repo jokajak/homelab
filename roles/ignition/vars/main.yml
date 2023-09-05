@@ -1,0 +1,14 @@
+---
+# variables for ignition
+
+ignition_butane_config:
+  variant: fcos
+  version: '{{ ignition_butane_version }}'
+  passwd:
+    users: '{{ ignition_users }}'
+  systemd:
+    units: '{{ ignition_systemd_units }}'
+  storage:
+    disks: '{{ ignition_storage_disks }}'
+    filesystems: '{{ ignition_storage_filesystems }}'
+    files: '{{ ignition_storage_files }}'

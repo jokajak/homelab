@@ -13,7 +13,7 @@
   - "{{ ansible_facts['distribution'] }}.yml"
   - "{{ ansible_facts['distribution'] }}_{{ ansible_facts['distribution_major_version'] }}.yml"
   vars:
-    __common_vars_file: "{{ role_path }}/vars/{{ item }}"
+    __common_vars_file: '{{ role_path }}/vars/{{ item }}'
   when: __common_vars_file is file
 
 - name: Check that we can become root with sudo
