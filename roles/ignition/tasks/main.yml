@@ -1,20 +1,13 @@
 ---
 # main task file for ignition
-- name: Template butane file when ignition_dest is provided
+- name: Generate ignition file when ignition_dest is provided
   when: ignition_dest is defined
-  ansible.builtin.template:
-    src: butane.bu.j2
-    dest: '{{ ignition_dest }}'
-    mode: '0640'
+  command: butane --pretty --strict -o {{ ignition_dest }}
+  args:
+    stdin: '{{ ignition_butane_config | to_yaml }}'
 
 - name: Output butane file to stdout when ignition_dest is not provided
   when: ignition_dest is not defined
   ansible.builtin.debug:
     msg: |
       {{ ignition_butane_config | to_yaml }}
-
-- name: Generate ignition file
-  when:
-  - ignition_dest is defined
-  - '"butane" is file'
-  command: butane

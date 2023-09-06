@@ -9,11 +9,16 @@
   - name: pubkey
     prompt: Path to ssh pubkey (var=pubkey)
     private: false
+  - name: arch
+    prompt: What is the architecture? (var=arch)
+    default: aarch64
+    private: false
   pre_tasks:
   - name: Make sure pubkey exists
     assert:
       that:
       - pubkey is file
+      - k3s_token is defined
   tasks:
   - name: Generate butane config
     ansible.builtin.import_role:
@@ -21,16 +26,12 @@
     vars:
       ignition_ssh_pubkey: '{{ lookup("file", pubkey) }}'
 
-  - name: Generate ignition file
-    debug:
-      msg: podman
-
   - name: Run installer
     when: ignition_disk is defined
     debug:
       msg: |
         STREAM=stable # or `next` or `testing`
-        sudo coreos-installer install -a aarch64 -s $STREAM -i {{ ignition_hostname }}.ign {{ ignition_disk }}
+        sudo coreos-installer install -a '{{ arch }}' -s $STREAM -i {{ ignition_hostname }}.ign {{ ignition_disk }}
 
   - name: Run installer from container
     when: ignition_disk is defined
