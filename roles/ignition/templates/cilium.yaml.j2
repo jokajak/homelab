@@ -1,0 +1,22 @@
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: cilium
+  namespace: kube-system
+spec:
+  repo: https://helm.cilium.io/
+  chart: cilium
+  targetNamespace: kube-system
+  bootstrap: true
+  valuesContent: |-
+    ipv4.enabled: true
+    ipv6.enabled: true
+    ipam.mode: cluster-pool
+    bpf.masquerade: true
+    # natively routing ipv6
+    enableIPv6Masquerade: false
+    ipam.operator.clusterPoolIPv4MaskSize: {{ k3s_node_cidr_mask_size_ipv4 }}
+    ipam.operator.clusterPoolIPv6MaskSize: {{ k3s_node_cidr_mask_size_ipv6 }}
+    ipam.operator.clusterPoolIPv4PodCIDRList: "{{ k3s_ipv4_cluster_cidr }}"
+    ipam.operator.clusterPoolIPv6PodCIDRList: "{{ k3s_ipv6_cluster_prefix }}"
