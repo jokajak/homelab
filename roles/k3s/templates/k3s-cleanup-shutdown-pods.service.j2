@@ -1,0 +1,17 @@
+# Node shutdown leaves pods with status.phase=Failed and status.reason=Shutdown,
+# so delete them automatically on startup.
+# This may delete some pods that failed for other reasons, but --field-selector doesn't
+# currently support status.reason, so it's the best we can do.
+[Unit]
+Description=Cleanup pods terminated by node shutdown
+Wants=k3s.service
+
+[Service]
+Type=oneshot
+Environment=KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+ExecStart=kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

@@ -1,5 +1,6 @@
 ---
 # ansible playbook to generate an ignition file
+# ansible-playbook playbooks/ignite.yml
 - name: Generate an ignition file
   hosts: localhost
   vars_prompt:
@@ -25,6 +26,7 @@
       name: ignition
     vars:
       ignition_ssh_pubkey: '{{ lookup("file", pubkey) }}'
+      ignition_arch: '{{ arch }}'
 
   - name: Run installer
     when: ignition_disk is defined

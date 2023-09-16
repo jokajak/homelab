@@ -1,0 +1,224 @@
+---
+# tasks file for k3s
+
+- name: Download k3s binary x64
+  get_url:
+    url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s
+    checksum: sha256:https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/sha256sum-amd64.txt
+    dest: /usr/local/bin/k3s
+    owner: root
+    group: root
+    mode: 0755
+  when: ansible_facts.architecture == "x86_64"
+
+- name: Download k3s binary arm64
+  get_url:
+    url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s-arm64
+    checksum: sha256:https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/sha256sum-arm64.txt
+    dest: /usr/local/bin/k3s
+    owner: root
+    group: root
+    mode: 0755
+  when:
+  - ( ansible_facts.architecture is search("arm") and
+      ansible_facts.userspace_bits == "64" ) or
+    ansible_facts.architecture is search("aarch64")
+
+- name: Download k3s binary armhf
+  get_url:
+    url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s-armhf
+    checksum: sha256:https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/sha256sum-arm.txt
+    dest: /usr/local/bin/k3s
+    owner: root
+    group: root
+    mode: 0755
+  when:
+  - ansible_facts.architecture is search("arm")
+  - ansible_facts.userspace_bits == "32"
+
+- name: Create manifests directory on primary controller
+  when: k3s_is_primary_controller
+  ansible.builtin.file:
+    path: /var/lib/rancher/k3s/server/manifests
+    state: directory
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: /etc/rancher/k3s
+    state: directory
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure k3s service exists
+  ansible.builtin.template:
+    src: k3s.service.j2
+    dest: /etc/systemd/system/k3s.service
+    mode: '0644'
+    owner: 'root'
+    group: 'root'
+
+- name: Ensure k3s cleanup service
+  ansible.builtin.template:
+    src: k3s-cleanup-shutdown-pods.service.j2
+    dest: /etc/systemd/system/k3s-cleanup-shutdown-pods.service
+    mode: '0644'
+    owner: 'root'
+    group: 'root'
+
+- name: Ensure k3s config file
+  ansible.builtin.template:
+    src: '{{ k3s_role }}_config.yaml.j2'
+    dest: /etc/rancher/k3s/config.yaml
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Ensure custom manifests
+  when: k3s_is_primary_controller
+  ansible.builtin.template:
+    src: 'custom-{{ item }}-helmchart.yaml.j2'
+    dest: /var/lib/rancher/k3s/server/manifests/custom-{{ item }}-helmchart.yaml
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+  - coredns
+  - cilium
+
+- name: Download custom manifests
+  when: k3s_is_primary_controller
+  ansible.builtin.get_url:
+    url: '{{ item.url }}'
+    dest: /var/lib/rancher/k3s/server/manifests/{{ item.filename }}
+    mode: '0644'
+  loop: '{{ k3s_server_manifests_urls }}'
+
+- name: Ensure kube-vip static pod file
+  when: _k3s_is_server
+  ansible.builtin.template:
+    src: kube-vip-static-pod.yaml.j2
+    dest: /var/lib/rancher/k3s/server/manifests/kube-vip.yaml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Stop k3s-init
+  when: k3s_is_primary_controller
+  ansible.builtin.systemd:
+    name: k3s-init
+    state: stopped
+  failed_when: false  # temporary service
+
+- name: Initialize cluster
+  when: k3s_is_primary_controller
+  ansible.builtin.command:
+    cmd: >
+      systemd-run
+        -p RestartSec=5
+        -p Restart=on-failure
+        --unit=k3s-init
+        k3s server {{ k3s_server_init }}
+    creates: /etc/rancher/k3s/k3s.yaml
+  register: _k3s_init_command
+
+- name: Wait for k3s to initialize
+  when:
+  - not ansible_check_mode
+  - k3s_is_primary_controller
+  block:
+  - name: Verify that all nodes actually joined
+    ansible.builtin.command:
+      cmd: >
+        k3s kubectl get nodes
+          -l "node-role.kubernetes.io/master=true"
+          -o=jsonpath="{.items[*].metadata.name}"
+    register: nodes
+    until: nodes.rc == 0
+    retries: '{{ k3s_init_retry_count }}'
+    delay: '{{ k3s_init_retry_delay }}'
+    changed_when: false
+  always:
+  - name: Stop the temporary service used for initialization
+    ansible.builtin.systemd:
+      name: k3s-init
+      state: stopped
+    failed_when: false
+
+- name: Enable and check k3s service
+  ansible.builtin.systemd:
+    name: k3s
+    daemon_reload: true
+    state: restarted
+    enabled: true
+
+- name: Create temporary kubeconfig file
+  connection: local
+  become: false
+  ansible.builtin.tempfile:
+    state: directory
+    prefix: k3s.
+  register: _k3s_tempdir
+
+- name: Fetch the kubeconfig
+  ansible.builtin.fetch:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: "{{ _k3s_tempdir.path }}/kubeconfig"
+    flat: true
+
+- name: Update kubeconfig with the correct load balancer address
+  delegate_to: localhost
+  become: false
+  run_once: true
+  ansible.builtin.replace:
+    path: "{{ _k3s_tempdir.path }}/kubeconfig"
+    regexp: https://127.0.0.1:6443
+    replace: "https://{{ k3s_apiserver_endpoint }}:6443"
+
+- name: Wait for custom manifests to rollout
+  connection: local
+  become: false
+  when:
+  - k3s_is_primary_controller
+  - _k3s_init_command is changed
+  kubernetes.core.k8s_info:
+    kubeconfig: '{{ _k3s_tempdir.path }}/kubeconfig'
+    kind: "{{ item.kind }}"
+    name: "{{ item.name }}"
+    namespace: "{{ item.namespace | default('') }}"
+    wait: true
+    wait_sleep: 10
+    wait_timeout: 360
+  loop:
+  - { name: cilium, kind: HelmChart, namespace: kube-system }
+  - { name: coredns, kind: HelmChart, namespace: kube-system }
+  - { name: podmonitors.monitoring.coreos.com, kind: CustomResourceDefinition }
+  - { name: prometheusrules.monitoring.coreos.com, kind: CustomResourceDefinition }
+  - { name: scrapeconfigs.monitoring.coreos.com, kind: CustomResourceDefinition }
+  - { name: servicemonitors.monitoring.coreos.com, kind: CustomResourceDefinition }
+
+- name: Configure coredns
+  connection: local
+  become: false
+  ansible.builtin.import_tasks: coredns.yml
+
+- name: Configure cilium
+  connection: local
+  become: false
+  ansible.builtin.import_tasks: cilium.yml
+
+- name: Cleanup bootstrapping
+  connection: local
+  become: false
+  ansible.builtin.import_tasks: cleanup_bootstrap.yml
+
+- name: Cleanup tempdir
+  connection: local
+  become: false
+  ansible.builtin.file:
+    path: "{{ _k3s_tempdir.path }}"
+    state: absent
+  when: _k3s_tempdir.path is defined

@@ -1,0 +1,10 @@
+---
+# ansible playbook to configure kubernetes
+- name: Generate age
+  hosts: localhost
+  become: false
+  tasks:
+  - name: Create age key
+    ansible.builtin.command:
+      cmd: age-keygen -o age.key
+      creates: age.key

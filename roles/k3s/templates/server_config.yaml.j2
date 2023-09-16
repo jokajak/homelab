@@ -1,0 +1,28 @@
+---
+# k3s configuration file
+write-kubeconfig-mode: '{{ k3s_kubeconfig_mode }}'
+tls-san: {{ k3s_tls_san | to_yaml }}
+# disable flannel in favor of cilium because let's do hard mode
+# using cilium because it uses eBPF which is new hotness
+flannel-backend: {{ k3s_flannel_backend }}
+# disable network policy in favor of cilium
+disable-network-policy: {{ k3s_disable_network_policy }}
+disable-cloud-controller: true
+disable-kube-proxy: true            # Cilium uses eBPF
+disable: {{ k3s_disabled_addons | to_yaml }}
+etcd-expose-metrics: true           # Required to monitor etcd with kube-prometheus-stack
+# configure a cluster cidr to support ipv6
+cluster-cidr: {{ k3s_ipv4_cluster_cidr }},{{ k3s_ipv6_cluster_prefix }}
+service-cidr: {{ k3s_ipv4_service_cidr }},{{ k3s_ipv6_service_prefix }}
+kube-controller-manager-arg:
+- node-cidr-mask-size-ipv4={{ k3s_node_cidr_mask_size_ipv4 }}
+- node-cidr-mask-size-ipv6={{ k3s_node_cidr_mask_size_ipv6 }}
+- "bind-address=0.0.0.0"          # Required to monitor kube-controller-manager with kube-prometheus-stack
+kube-scheduler-arg:
+- "bind-address=0.0.0.0"          # Required to monitor kube-scheduler with kube-prometheus-stack
+kube-apiserver-arg:
+- "anonymous-auth=true"           # Required for HAProxy health-checks
+
+{% if k3s_token is defined and k3s_token | length > 0 %}
+token: {{ k3s_token }}
+{% endif %}

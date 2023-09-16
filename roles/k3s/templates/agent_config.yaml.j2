@@ -1,0 +1,5 @@
+---
+{% if k3s_token is defined and k3s_token | length > 0 %}
+token: {{ k3s_token }}
+{% endif %}
+server: 'https://{{ k3s_apiserver_endpoint }}:6443'

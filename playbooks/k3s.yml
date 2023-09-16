@@ -1,0 +1,17 @@
+---
+# ansible playbook to configure k3s servers
+- name: Configure controller nodes
+  hosts: k3s_servers
+  become: true
+  tasks:
+  - name: Configure k3s controllers
+    import_role:
+      name: k3s
+
+- name: Configure controller nodes
+  hosts: k3s_agents
+  become: true
+  tasks:
+  - name: Configure k3s controllers
+    import_role:
+      name: k3s

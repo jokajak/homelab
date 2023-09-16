@@ -1,0 +1,34 @@
+---
+# k3s tasklist to clean up bootstrap files
+- name: Cleanup | Get list of custom mantifests
+  ansible.builtin.find:
+    paths: "{{ k3s_server_manifests_dir }}"
+    file_type: file
+    use_regex: true
+    patterns: ["^custom-.*"]
+  register: custom_manifest
+
+- name: Cleanup | Delete custom mantifests
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ custom_manifest.files }}"
+
+- name: Cleanup | Get list of custom addons
+  connection: local
+  become: false
+  kubernetes.core.k8s_info:
+    kubeconfig: '{{ k3s_kubeconfig }}'
+    kind: Addon
+  register: addons_list
+
+- name: Cleanup | Delete addons
+  connection: local
+  become: false
+  kubernetes.core.k8s:
+    kubeconfig: '{{ k3s_kubeconfig }}'
+    name: "{{ item.metadata.name }}"
+    kind: Addon
+    namespace: kube-system
+    state: absent
+  loop: "{{ addons_list.resources | selectattr('metadata.name', 'match', '^custom-.*') | list }}"

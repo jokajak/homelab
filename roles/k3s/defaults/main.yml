@@ -1,0 +1,70 @@
+---
+# defaults file for k3s
+k3s_version: v1.27.5+k3s1
+k3s_role: agent
+
+k3s_server_args: ''
+k3s_server_init: ''
+
+k3s_disable_network_policy: false
+k3s_disabled_addons:
+# replaced with custom helm chart
+- coredns        # Disable coredns
+- flannel        # Disable flannel
+- servicelb      # Disable servicelb
+# installed with flux
+- local-storage  # Disable local-path-provisioner
+- metrics-server # Disable metrics-server
+- traefik        # Disable traefik
+k3s_flannel_backend: vxlan
+
+k3s_kubeconfig_mode: '0640'
+
+k3s_tls_san:
+- '{{ k3s_apiserver_endpoint }}'
+
+k3s_ipv6_cluster_prefix: 'fc00:473d:9f9c:6::/56'
+k3s_ipv6_service_prefix: 'fc00:473d:9f9c:7::/112'
+k3s_ipv4_cluster_cidr: '10.42.0.0/16'
+k3s_ipv4_service_cidr: '10.43.0.0/16'
+k3s_node_cidr_mask_size_ipv6: 96
+k3s_node_cidr_mask_size_ipv4: 24
+
+k3s_token: ~
+
+k3s_is_primary_controller: false
+
+k3s_kube_vip_iface: ~
+k3s_vip_cidr: >-
+  {{
+    k3s_apiserver_endpoint
+    | ansible.utils.ipsubnet
+    | ansible.utils.ipaddr("prefix")
+  }}
+
+k3s_apiserver_endpoint: ~
+k3s_kube_vip_tag_version: v0.6.2
+k3s_init_retry_count: 20
+k3s_init_retry_delay: 30
+
+k3s_ipv4_native_cidr: ~
+k3s_ipv6_native_cidr: ~
+
+k3s_coredns_addr: '{{ k3s_ipv4_service_cidr.split(",")[0] | ansible.utils.nthhost(10) }}'
+k3s_server_manifests_dir: /var/lib/rancher/k3s/
+
+k3s_server_manifests_urls:
+# Kube-vip RBAC
+- url: https://raw.githubusercontent.com/kube-vip/kube-vip/main/docs/manifests/rbac.yaml
+  filename: kube-vip-rbac.yaml
+# Essential Prometheus Operator CRDs (the rest are installed with the kube-prometheus-stack helm release)
+- url: https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.66.0/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
+  filename: custom-prometheus-podmonitors.yaml
+- url: https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.66.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
+  filename: custom-prometheus-prometheusrules.yaml
+- url: https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.66.0/example/prometheus-operator-crd/monitoring.coreos.com_scrapeconfigs.yaml
+  filename: custom-prometheus-scrapeconfigs.yaml
+- url: https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.66.0/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
+  filename: custom-prometheus-servicemonitors.yaml
+
+k3s_kubeconfig: '{{ _k3s_tempdir.path }}/kubeconfig'
