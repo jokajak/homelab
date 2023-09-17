@@ -222,3 +222,18 @@
     path: "{{ _k3s_tempdir.path }}"
     state: absent
   when: _k3s_tempdir.path is defined
+
+- name: Fetch the kubeconfig
+  ansible.builtin.fetch:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: "{{ playbook_dir }}/kubeconfig"
+    flat: true
+
+- name: Update kubeconfig with the correct load balancer address
+  delegate_to: localhost
+  become: false
+  run_once: true
+  ansible.builtin.replace:
+    path: "{{ playbook_dir }}/kubeconfig"
+    regexp: https://127.0.0.1:6443
+    replace: "https://{{ k3s_apiserver_endpoint }}:6443"

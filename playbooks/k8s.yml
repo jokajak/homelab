@@ -1,10 +1,51 @@
 ---
 # ansible playbook to configure kubernetes
-- name: Generate age
+- name: Configure cluster
   hosts: localhost
   become: false
+  environment:
+    KUBECONFIG: '{{ playbook_dir }}/kubeconfig'
+  pre_tasks:
+  - name: Ensure kubeconfig exists
+    assert:
+      that:
+      - '"{{ playbook_dir }}/kubeconfig" is file'
   tasks:
   - name: Create age key
     ansible.builtin.command:
       cmd: age-keygen -o age.key
       creates: age.key
+
+  - name: Create kubernetes structure
+    debug:
+      msg: To be implemented, maybe?
+
+  - name: Prepare for flux
+    debug:
+      msg: kubectl apply --kustomize {{ playbook_dir }}/../kubernetes/bootstrap
+
+  - name: Store age key in cluster
+    kubernetes.core.k8s:
+      state: present
+      definition:
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: sops-age
+          namespace: flux-system
+        data:
+          age.agekey: '{{ lookup("file", "age.key") | b64encode }}'
+
+  - name: Import cluster secrets
+    kubernetes.core.k8s:
+      state: present
+      definition: '{{ lookup("file", item) | community.sops.decrypt(age_keyfile="./age.key") | from_yaml }}'
+    loop:
+    - ../kubernetes/flux/vars/cluster-secrets.sops.yaml
+    - ../kubernetes/flux/vars/cluster-secrets-user.sops.yaml
+    - ../kubernetes/flux/vars/cluster-settings.sops.yaml
+    - ../kubernetes/flux/vars/cluster-settings-user.sops.yaml
+
+  - name: Apply flux config
+    debug:
+      msg: kubectl apply --kustomize {{ playbook_dir }}/../kubernetes/flux/config

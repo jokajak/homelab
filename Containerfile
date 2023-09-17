@@ -8,7 +8,8 @@ RUN dnf -y upgrade
 RUN dnf -y install \
   ansible \
   kubernetes-client \
-  python-kubernetes
+  python-kubernetes \
+  vim
 
 # renovate: datasource=github-releases depName=getsops/sops extractVersion=^v(?<version>.*)$
 ARG SOPS_VERSION=3.8.0
