@@ -17,12 +17,12 @@
       creates: age.key
 
   - name: Create kubernetes structure
-    debug:
+    ansible.builtin.debug:
       msg: To be implemented, maybe?
 
   - name: Prepare for flux
-    debug:
-      msg: kubectl apply --kustomize {{ playbook_dir }}/../kubernetes/bootstrap
+    ansible.builtin.command:
+      cmd: kubectl apply --kustomize {{ playbook_dir }}/../kubernetes/bootstrap
 
   - name: Store age key in cluster
     kubernetes.core.k8s:
@@ -47,5 +47,5 @@
     - ../kubernetes/flux/vars/cluster-settings-user.sops.yaml
 
   - name: Apply flux config
-    debug:
-      msg: kubectl apply --kustomize {{ playbook_dir }}/../kubernetes/flux/config
+    ansible.builtin.command:
+      cmd: kubectl apply --kustomize {{ playbook_dir }}/../kubernetes/flux/config

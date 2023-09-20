@@ -1,4 +1,5 @@
 ---
+# https://docs.k3s.io/helm
 apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
@@ -12,36 +13,35 @@ spec:
   targetNamespace: kube-system
   bootstrap: true
   valuesContent: |-
-    # nodes are layer 2 connected
     autoDirectNodeRoutes: true
-    bpf.masquerade: true
-    bgp.enabled: false
+    bpf:
+      masquerade: true
+    bgp:
+      enabled: false
     cluster:
       name: home-cluster
       id: 1
-    endpointRoutes.enabled: true
-    ipam.mode: cluster-pool
-
-    ipv4.enabled: true
-    ipv4NativeRoutingCIDR: "{{ k3s_ipv4_native_cidr }}"
-    # natively routing ipv6
-    ipam.operator.clusterPoolIPv4MaskSize: {{ k3s_node_cidr_mask_size_ipv4 }}
-    ipam.operator.clusterPoolIPv4PodCIDRList: "{{ k3s_ipv4_cluster_cidr }}"
-
-    ipv6.enabled: true
-    ipv6NativeRoutingCIDR: "{{ k3s_ipv6_native_cidr }}"
-    ipam.operator.clusterPoolIPv6MaskSize: {{ k3s_node_cidr_mask_size_ipv6 }}
-    ipam.operator.clusterPoolIPv6PodCIDRList: "{{ k3s_ipv6_cluster_prefix }}"
+    containerRuntime:
+      integration: containerd
+      socketPath: /var/run/k3s/containerd/containerd.sock
+    endpointRoutes:
+      enabled: true
+    # no need to masquerade with native ipv6 cidr
     enableIPv6Masquerade: false
-
+    hubble:
+      enabled: false
+    ipam:
+      mode: kubernetes
+    ipv4NativeRoutingCIDR: "{{ k3s_ipv4_native_cidr }}"
+    ipv6NativeRoutingCIDR: "{{ k3s_ipv6_native_cidr }}"
+    ipv6:
+      enabled: true
     k8sServiceHost: "{{ k3s_apiserver_endpoint }}"
     k8sServicePort: 6443
     kubeProxyReplacement: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-
-    # disabled because of ipv6
-    l2announcements.enabled: false
-
+    l2announcements:
+      enabled: false
     loadBalancer:
       algorithm: maglev
       mode: dsr

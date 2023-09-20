@@ -17,6 +17,8 @@ ARG SOPS_VERSION=3.8.0
 ARG AGE_VERSION=1.1.1
 # renovate: datasource=github-releases depName=fluxcd/flux2 extractVersion=^v(?<version>.*)$
 ARG FLUX_VERSION=2.1.0
+# renovate: datasource=github-releases depName=derailed/k9s extractVersion=^v(?<version>.*)$
+ARG K9S_VERSION=0.27.4
 
 # Download binaries
 RUN curl -L https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux.amd64 -o /usr/local/bin/sops \
@@ -28,5 +30,8 @@ RUN curl -L https://github.com/FiloSottile/age/releases/download/v${AGE_VERSION}
 RUN curl -L https://github.com/fluxcd/flux2/releases/download/v${FLUX_VERSION}/flux_${FLUX_VERSION}_linux_amd64.tar.gz -o /tmp/flux.tar.gz \
   && tar -C /tmp -xf /tmp/flux.tar.gz \
   && install -m 755 /tmp/flux /usr/local/bin/flux
+RUN curl -L https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/k9s_Linux_amd64.tar.gz -o /tmp/k9s.tar.gz \
+  && tar -C /tmp -xf /tmp/k9s.tar.gz \
+  && install -m 755 /tmp/k9s /usr/local/bin/k9s
 
 RUN dnf clean all

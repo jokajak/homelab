@@ -162,12 +162,16 @@
     state: directory
     prefix: k3s.
   register: _k3s_tempdir
+  when:
+  - k3s_is_primary_controller
 
 - name: Fetch the kubeconfig
   ansible.builtin.fetch:
     src: /etc/rancher/k3s/k3s.yaml
     dest: "{{ _k3s_tempdir.path }}/kubeconfig"
     flat: true
+  when:
+  - k3s_is_primary_controller
 
 - name: Update kubeconfig with the correct load balancer address
   delegate_to: localhost
@@ -177,6 +181,8 @@
     path: "{{ _k3s_tempdir.path }}/kubeconfig"
     regexp: https://127.0.0.1:6443
     replace: "https://{{ k3s_apiserver_endpoint }}:6443"
+  when:
+  - k3s_is_primary_controller
 
 - name: Wait for custom manifests to rollout
   connection: local
@@ -203,16 +209,20 @@
 - name: Configure coredns
   connection: local
   become: false
+  when:
+  - k3s_is_primary_controller
   ansible.builtin.import_tasks: coredns.yml
 
 - name: Configure cilium
   connection: local
   become: false
+  when:
+  - k3s_is_primary_controller
   ansible.builtin.import_tasks: cilium.yml
 
 - name: Cleanup bootstrapping
-  connection: local
-  become: false
+  when:
+  - k3s_is_primary_controller
   ansible.builtin.import_tasks: cleanup_bootstrap.yml
 
 - name: Cleanup tempdir
@@ -228,6 +238,8 @@
     src: /etc/rancher/k3s/k3s.yaml
     dest: "{{ playbook_dir }}/kubeconfig"
     flat: true
+  when:
+  - k3s_is_primary_controller
 
 - name: Update kubeconfig with the correct load balancer address
   delegate_to: localhost
@@ -237,3 +249,5 @@
     path: "{{ playbook_dir }}/kubeconfig"
     regexp: https://127.0.0.1:6443
     replace: "https://{{ k3s_apiserver_endpoint }}:6443"
+  when:
+  - k3s_is_primary_controller

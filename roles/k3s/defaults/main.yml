@@ -47,8 +47,8 @@ k3s_kube_vip_tag_version: v0.6.2
 k3s_init_retry_count: 20
 k3s_init_retry_delay: 30
 
-k3s_ipv4_native_cidr: ~
-k3s_ipv6_native_cidr: ~
+k3s_ipv4_native_cidr: '{{ k3s_ipv4_cluster_cidr }}'
+k3s_ipv6_native_cidr: ""
 
 k3s_coredns_addr: '{{ k3s_ipv4_service_cidr.split(",")[0] | ansible.utils.nthhost(10) }}'
 k3s_server_manifests_dir: /var/lib/rancher/k3s/
