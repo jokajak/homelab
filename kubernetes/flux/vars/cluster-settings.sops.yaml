@@ -12,6 +12,10 @@ data:
     NODE_CIDR: ENC[AES256_GCM,data:9t0MC9ncwngMFonjpbAANQ==,iv:kO9kDcuXWY8a3Pki3T5Xx3OAq1cMkTRBb1YDVVLfpug=,tag:r3jVXvMybgFhXEq0nXLGxA==,type:str]
     CLUSTER_CIDR_V6: ENC[AES256_GCM,data:FgoeRCJ07Ndn7mbF/CthwWMyqHRmY44xSBM=,iv:RCSeU8qc0ajHYQrn8ex7NHxCS1Hm2G7pRSQ8PR9GJFw=,tag:kiDxiHAEfDCg0QHmG+PJqg==,type:str]
     SERVICE_CIDR_V6: ENC[AES256_GCM,data:bmO8zeBPebbBiX/M1+wycNId1abRL3AQSrfr,iv:1jwAG1IJW6/zQsLFepQgJhEtas+WBxs+UnRUtlijnO8=,tag:fJYDQP/g+ppZNq2Mw2RyCg==,type:str]
+    GATEWAY_ADDR: ENC[AES256_GCM,data:pHDTqOJtWH/MDT9FZTQ=,iv:GvKaKXPVB8ZJuKIsGMme9Sku7P++dtK3BS4l1K5+dsg=,tag:0Jvcho66UpIS/jWqVciljw==,type:str]
+    INTERNAL_PROXY_ADDR: ENC[AES256_GCM,data:fmcVgQkEg7jRIBoWmPk=,iv:64IhmIr0p0/JqilIAVdK3PHmWt61TxQDRQpoV75/qZk=,tag:QaqU+6l2gbXH3RsbQQk7lw==,type:str]
+    EXTERNAL_PROXY_ADDR: ENC[AES256_GCM,data:3KZq3q9MD/bq+AJ0zPU=,iv:U5jfmgg1QSaNdZVufgOAv6aKA44invezrw7KOY1EyDc=,tag:mJ5SOFceo4N5ZIwGgRv1Hg==,type:str]
+    LB_CIDR: ENC[AES256_GCM,data:IFodVJwiSCGrripx/Xbb2uI=,iv:brGX0HoJAdH/KlPpjSDV4dx/vgZm9xV5/x1Z76O053o=,tag:TVVDA+2uwXEi3OTJGo1C1A==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -27,8 +31,8 @@ sops:
             VGhyYjVnaDN1UmlKN1RlRmR5czVxM1UKn36arzluQG8pCgi3oeHIsitieCKn61PF
             vDL7NTRoYB+TV9RS+ReL2zvaleMqM4FHSmc/pzB30bdi3OvMQY3iGA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-09-17T15:02:06Z"
-    mac: ENC[AES256_GCM,data:V+w6YFKzzYQJOawT/EBImtXxaLZH6Ez175J+Fo1brWKFHDu/196IDldgrW/ot/7dabVZIgzrxFFgosDYnQklqX4Z2lPgxc/q78+CTFJCTnYyS4fME+xWdRGlmB1RMhHCofy9r/E9mWnNnhxVCqckq2JPTmZ83dQ/k0Ju5AIWc6Y=,iv:pPXfPkYLfMyietEJVTRA1yuxPzRNcoQv/8QQQJfgdLo=,tag:P8XUDt6b2sJNBvSDKZWoZw==,type:str]
+    lastmodified: "2023-10-01T23:18:36Z"
+    mac: ENC[AES256_GCM,data:1xo83rEVhhDQM3/EbVnZd4EMicVEBoqHKRInv/tgxO2sDpw96hinWwgq8tDfXqTjqrTRhx2vV8W5I1znpA/BO9OAvMMNBdDxmUGDZ3Hj5pVlZED8mR55CDlHhI5QIeYnrNvBPpMefyhK2Qcf2nD/80CmQfGQGS/gWtTmb3k5sfo=,iv:SM5D3uIzzCHzMl1FVXVScvStCsoiOUobx+tflFLzwmo=,tag:hU3v0SM5wdCGfScSwjg+Tg==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.8.0

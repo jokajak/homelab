@@ -16,4 +16,4 @@ metadata:
   name: pool
 spec:
   cidrs:
-    - cidr: ${LB_CIDR}
+    - cidr: "${LB_CIDR}"
