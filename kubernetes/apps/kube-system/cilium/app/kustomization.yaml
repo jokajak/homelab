@@ -4,3 +4,5 @@ kind: Kustomization
 namespace: kube-system
 resources:
   - ./helmrelease.yaml
+  - ./cilium-l2.yaml
+  - ./ndp-patch.yaml
