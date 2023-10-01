@@ -1,4 +1,4 @@
-FROM fluxcd/flux-cli:v2.1.0
+FROM fluxcd/flux-cli:v2.1.1
 
 FROM fedora-toolbox
 
