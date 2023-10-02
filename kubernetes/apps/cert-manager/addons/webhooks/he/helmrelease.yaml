@@ -1,0 +1,32 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cert-manager-webhook-he
+  namespace: cert-manager
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: cert-manager-webhook-he
+      version: 0.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: cert-manager-webhook-he
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    rbac:
+      secretNamespaces:
+      - cert-manager
+      secretNames:
+      - cert-manager-webhook-henet-secret
