@@ -2,9 +2,10 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: cert-manager-webhook-he
+  # cert-manager-webhook-he
+  name: waldner-charts
   namespace: flux-system
 spec:
   type: oci
   interval: 1h
-  url: oci://ghcr.io/waldner/charts/cert-manager-webhook-he
+  url: oci://ghcr.io/waldner/charts/
