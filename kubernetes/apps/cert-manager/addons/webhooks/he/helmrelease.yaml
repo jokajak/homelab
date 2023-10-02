@@ -25,6 +25,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    auth:
+      useSecrets: true
     rbac:
       secretNamespaces:
       - cert-manager
