@@ -25,6 +25,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    groupName: "acme-challenge.${SECRET_DOMAIN}"
+    groupName: "${SECRET_DOMAIN}"
     secretName:
     - cert-manager-webhook-henet-secret
