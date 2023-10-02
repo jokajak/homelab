@@ -1,6 +1,6 @@
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: OciRepository
+kind: HelmRepository
 metadata:
   name: cert-manager-webhook-he
   namespace: flux-system
