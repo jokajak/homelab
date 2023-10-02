@@ -11,7 +11,7 @@ spec:
     solvers:
       - dns01:
           webhook:
-            groupName: "_acme-challenge.${SECRET_DOMAIN}"
+            groupName: "acme-challenge.${SECRET_DOMAIN}"
             solverName: hurricane-electric
             config:
               secretName: cert-manager-webhook-henet-secret
@@ -33,7 +33,7 @@ spec:
     solvers:
       - dns01:
           webhook:
-            groupName: "_acme-challenge.${SECRET_DOMAIN}"
+            groupName: "acme-challenge.${SECRET_DOMAIN}"
             solverName: hurricane-electric
             config:
               secretName: cert-manager-webhook-henet-secret

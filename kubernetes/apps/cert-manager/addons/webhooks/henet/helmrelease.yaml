@@ -25,4 +25,4 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    groupName: "_acme-challenge.${SECRET_DOMAIN}"
+    groupName: "acme-challenge.${SECRET_DOMAIN}"
