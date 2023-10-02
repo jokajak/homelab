@@ -26,3 +26,5 @@ spec:
     keepHistory: false
   values:
     groupName: "acme-challenge.${SECRET_DOMAIN}"
+    secretName:
+    - cert-manager-webhook-henet-secret
