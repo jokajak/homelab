@@ -12,13 +12,10 @@ spec:
       - dns01:
           webhook:
             groupName: "${SECRET_DOMAIN}"
-            solverName: he
+            solverName: hurricane-electric
             config:
-              method: "dynamic-dns"
-
-              apiKeySecretRef:
-                name: cert-manager-webhook-henet-secret
-                namespace: "cert-manager"
+              secretName: cert-manager-webhook-henet-secret
+              apiUrl: https://dyn.dns.he.net
         selector:
           dnsZones:
             - "${SECRET_DOMAIN}"
@@ -37,13 +34,10 @@ spec:
       - dns01:
           webhook:
             groupName: "${SECRET_DOMAIN}"
-            solverName: he
+            solverName: hurricane-electric
             config:
-              method: "dynamic-dns"
-
-              apiKeySecretRef:
-                name: cert-manager-webhook-henet-secret
-                namespace: "cert-manager"
+              secretName: cert-manager-webhook-henet-secret
+              apiUrl: https://dyn.dns.he.net
         selector:
           dnsZones:
             - "${SECRET_DOMAIN}"
