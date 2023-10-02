@@ -11,10 +11,10 @@ spec:
     solvers:
       - dns01:
           webhook:
-            groupName: "acme.${SECRET_DOMAIN}"
+            groupName: "_acme-challenge.${SECRET_DOMAIN}"
             solverName: hurricane-electric
             config:
-              secretName: henet-secret
+              secretName: cert-manager-webhook-henet-secret
               apiUrl: https://dyn.dns.he.net
         selector:
           dnsZones:
@@ -33,10 +33,10 @@ spec:
     solvers:
       - dns01:
           webhook:
-            groupName: "acme.${SECRET_DOMAIN}"
+            groupName: "_acme-challenge.${SECRET_DOMAIN}"
             solverName: hurricane-electric
             config:
-              secretName: henet-secret
+              secretName: cert-manager-webhook-henet-secret
               apiUrl: https://dyn.dns.he.net
         selector:
           dnsZones:
