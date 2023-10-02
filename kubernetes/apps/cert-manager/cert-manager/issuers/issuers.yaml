@@ -10,10 +10,12 @@ spec:
       name: letsencrypt-production
     solvers:
       - dns01:
-          cloudflare:
-            apiTokenSecretRef:
-              name: cert-manager-secret
-              key: api-token
+          webhook:
+            groupName: "acme.${SECRET_DOMAIN}"
+            solverName: hurricane-electric
+            config:
+              secretName: henet-secret
+              apiUrl: https://dyn.dns.he.net
         selector:
           dnsZones:
             - "${SECRET_DOMAIN}"
@@ -30,10 +32,12 @@ spec:
       name: letsencrypt-staging
     solvers:
       - dns01:
-          cloudflare:
-            apiTokenSecretRef:
-              name: cert-manager-secret
-              key: api-token
+          webhook:
+            groupName: "acme.${SECRET_DOMAIN}"
+            solverName: hurricane-electric
+            config:
+              secretName: henet-secret
+              apiUrl: https://dyn.dns.he.net
         selector:
           dnsZones:
             - "${SECRET_DOMAIN}"
