@@ -3,7 +3,3 @@
 token: {{ k3s_token }}
 {% endif %}
 server: 'https://{{ k3s_apiserver_endpoint }}:6443'
-{% if _k3s_zwave_adapter %}
-node-label:
-- "zwave_adapter=true"
-{% endif %}

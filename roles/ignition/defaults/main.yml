@@ -68,7 +68,7 @@ ignition_systemd_units:
     # if the package is already installed. This is useful if the package is
     # added to the root image in a future Fedora CoreOS release as it will
     # prevent the service from failing.
-    ExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive python3 python3-selinux lshw
+    ExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive python3 python3-selinux
     ExecStart=/bin/touch /var/lib/%N.stamp
 
     [Install]

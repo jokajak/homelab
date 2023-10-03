@@ -20,3 +20,4 @@ resources:
   - ./weave-gitops.yaml
   - ./cert-manager-webhook-henet.yaml
   - ./cert-manager-webhook-he.yaml
+  - ./node-feature-discovery.yaml
