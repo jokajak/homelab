@@ -21,3 +21,8 @@ This repository contains my homelab orchestration and notes.
 4. Start Setup Wizard
 5. Use Interactive Mode
 6. Run renovate on appropriate repository
+
+## Configuration Notes
+
+* using csi-driver-nfs for PVCs backed by NFS. This was chosen instead of the [nfs-subdir-external-provisioner](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner)
+  because one says it is a csi-driver.
