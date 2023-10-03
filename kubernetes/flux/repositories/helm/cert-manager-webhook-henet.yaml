@@ -5,5 +5,5 @@ metadata:
   name: cert-manager-webhook-henet
   namespace: flux-system
 spec:
-  interval: 1h
+  interval: 2h
   url: https://jokajak.github.io/cert-manager-webhook-henet
