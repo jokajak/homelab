@@ -86,6 +86,15 @@ spec:
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
     l2announcements:
       enabled: true
+      # Values are high due to https://github.com/cilium/cilium/issues/26586
+      leaseDuration: 300s
+      leaseRenewDeadline: 60s
+      leaseRetryPeriod: 10s
+    # See https://docs.cilium.io/en/latest/network/l2-announcements/#sizing-client-rate-limit
+    # fudged high for safety margins
+    k8sClientRateLimit:
+      qps: 10
+      burst: 25
     loadBalancer:
       algorithm: maglev
       mode: dsr
