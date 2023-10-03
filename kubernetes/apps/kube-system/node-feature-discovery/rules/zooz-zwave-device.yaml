@@ -9,7 +9,7 @@ spec:
     - # Zooz Z-Stick ZST10
       name: zooz.zwave
       labels:
-        zooz.feature.node.kubernetes.io/zwave: "true"
+        zwave.feature.node.kubernetes.io/zwave: "true"
       matchFeatures:
         - feature: usb.device
           # lshw -numeric -class generic
@@ -24,5 +24,6 @@ spec:
           #      capabilities: usb-2.00
           #      configuration: driver=cp210x maxpower=100mA speed=12Mbit/s
           matchExpressions:
-            class: { op: In, value: ["00"] }
-            vendor: { op: In, value: ["10C4"] }
+            class: { op: In, value: ["ff"] }
+            vendor: { op: In, value: ["10c4"] }
+            device: { op: In, value: ["ea60"] }
