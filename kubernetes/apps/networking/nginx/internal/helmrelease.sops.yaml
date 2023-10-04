@@ -32,6 +32,7 @@ spec:
                     external-dns.alpha.kubernetes.io/hostname: int.${SECRET_DOMAIN}
                     io.cilium/lb-ipam-ips: ENC[AES256_GCM,data:2QHQ6ALo3YgBiFVnM5s=,iv:B9LdueRP8TP4um7swutqZEMjMd2weCYAWB4pY26hsAM=,tag:tREtJcJQ12HCd9yrknKD7w==,type:str]
                 externalTrafficPolicy: Cluster
+                ipFamilyPolicy: RequireDualStack
             ingressClassResource:
                 name: internal
                 default: true
@@ -98,8 +99,8 @@ sops:
             aUx2Q3cxTnQ5MWxGRTFsU01Bd3lodUEKOVH0PZsG+jakrolE42atjqUCL07dbgaw
             nyj8ZRTgfRJv9yOlFaggy/QtD+1/HldourSahVGKpPQE+med01vctw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-10-01T23:22:48Z"
-    mac: ENC[AES256_GCM,data:UzTDeFygdK43+9xsnkDUVFFveakxZiq8LcoyhmF/J3HvT8wOAuaYkEQZOlJcXoozJzm/qLuUl/lj/1XuAaiiZ5f295TNZVfpnbCVdpJ2MtiKoORzmS/wGpZKNhqywQxiqqhZSNyqthxFrMB+tLPIWdCilIAd5CJQNJFhPIhYc80=,iv:n+s7NUO62mRBhTLGZDBbDNSimY5gJ1aHv8XKq3ILH0k=,tag:YhMGVXqLQ2uek7p6j1jchg==,type:str]
+    lastmodified: "2023-10-04T21:37:49Z"
+    mac: ENC[AES256_GCM,data:zPcRfajn2P2z8JGEwrde64CqgVwlAjuzACOQP7OT2Sg12IzN5ZWKLvGc1z2Q6WI/6TeMKOz+5zGdW79kYtAOYzi5NA8Pp9l26j5A0ZsqCAfF+KyJEl9H0k4CJlTP0s9BBVu32Cgtk0dipbPUK9h6m+l8lnhk99i5Gj9gTq6t++4=,iv:3TjwyG6qCTtpuqiVVhVMwlR3FlTwovN6Lxww6bGiCSc=,tag:JpCcuqFIC5EltUQYq08HFQ==,type:str]
     pgp: []
     encrypted_regex: lb-ipam-ips
     version: 3.8.0
