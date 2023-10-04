@@ -10,6 +10,7 @@ resources:
   - ./grafana/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./kube-state-metrics/ks.yaml
-  - ./node-exporter/ks.yaml
-  - ./smartctl-exporter/ks.yaml
+  # disabled because I think it slows it down
+  #   - ./node-exporter/ks.yaml
+  #   - ./smartctl-exporter/ks.yaml
   - ./unpoller/ks.yaml
