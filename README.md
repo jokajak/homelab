@@ -40,6 +40,25 @@ ansible-playbook -i inventory.yml --vault-id inventory@.vault-pass \
   -e pubkey=ssh.pub
 ```
 
+### Raspberry Pi Customization
+
+```shell
+$ sudo lsblk /dev/sda -oLABEL,PATH
+LABEL      PATH
+           /dev/sda
+           /dev/sda1
+EFI-SYSTEM /dev/sda2
+boot       /dev/sda3
+root       /dev/sda4
+$ sudo mkdir /mnt/rpi_efi/
+$ VERSION=v1.34  # use validated version
+$ pushd /mnt/rpi_efi/
+$ sudo curl -LO https://github.com/pftf/RPi4/releases/download/${VERSION}/RPi4_UEFI_Firmware_${VERSION}.zip
+$ sudo unzip RPi4_UEFI_Firmware_${VERSION}.zip
+$ popd
+$ sudo umount /mnt/rpi_efi
+```
+
 ## Flux notes
 
 `flux reconcile source git home-kubernetes` immediately pulls git changes

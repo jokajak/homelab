@@ -26,3 +26,9 @@ kube-apiserver-arg:
 {% if k3s_token is defined and k3s_token | length > 0 %}
 token: {{ k3s_token }}
 {% endif %}
+{% if not k3s_is_primary_controller %}
+server: 'https://{{ _k3s_primary_controller }}:6443'
+{% endif %}
+{% if k3s_datastore_endpoint | length > 0 %}
+datastore-endpoint: '{{ k3s_datastore_endpoint }}'
+{% endif %}

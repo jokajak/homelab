@@ -37,7 +37,7 @@
   - ansible_facts.userspace_bits == "32"
 
 - name: Create manifests directory on primary controller
-  when: k3s_is_primary_controller
+  when: _k3s_is_server
   ansible.builtin.file:
     path: /var/lib/rancher/k3s/server/manifests
     state: directory

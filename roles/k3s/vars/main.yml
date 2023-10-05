@@ -1,3 +1,11 @@
 ---
 # vars file for k3s
 _k3s_is_server: '{{ k3s_role == "server" }}'
+_k3s_primary_controller: |
+  {{ groups["k3s_servers"]
+  | map("extract", hostvars)
+  | selectattr("k3s_is_primary_controller", "defined")
+  | selectattr("k3s_is_primary_controller", "true")
+  | map(attribute="ansible_host")
+  | first
+  }}
