@@ -5,5 +5,5 @@ resources:
   # Pre-flux kustomizations
   - ./namespace.yaml
   # flux kustomizations
-  # - ./unifi/ks.yaml
+  - ./unifi/ks.yaml
   - ./zwave-js-ui/ks.yaml
