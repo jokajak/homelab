@@ -26,3 +26,20 @@ This repository contains my homelab orchestration and notes.
 
 * using csi-driver-nfs for PVCs backed by NFS. This was chosen instead of the [nfs-subdir-external-provisioner](https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner)
   because one says it is a csi-driver.
+
+## Fedora Core OS Installation
+
+I used the following command to generate the ignition configuration:
+
+```shell
+ansible-playbook -i inventory.yml --vault-id inventory@.vault-pass \
+  playbooks/ignite.yml \
+  -e ignition_dest='{{ ignition_hostname }}.ign' \
+  -e ignition_disk=/dev/sda \
+  -e arch=aarch64 \
+  -e pubkey=ssh.pub
+```
+
+## Flux notes
+
+`flux reconcile source git home-kubernetes` immediately pulls git changes
