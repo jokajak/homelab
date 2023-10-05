@@ -83,7 +83,7 @@ spec:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           hajimari.io/icon: mdi:lan
         hosts:
-          - host: &host "{{ .Release.Name }}.int.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
         tls:

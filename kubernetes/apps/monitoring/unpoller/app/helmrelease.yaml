@@ -31,7 +31,7 @@ spec:
       tag: v2.9.2
     env:
       TZ: America/New_York
-      UP_UNIFI_DEFAULT_URL: https://unifi.int.${SECRET_DOMAIN}
+      UP_UNIFI_DEFAULT_URL: https://unifi.${SECRET_DOMAIN}
       UP_UNIFI_DEFAULT_VERIFY_SSL: false
       UP_UNIFI_DEFAULT_USER: ${SECRET_UNPOLLER_USER}
       UP_UNIFI_DEFAULT_PASS: ${SECRET_UNPOLLER_PASS}

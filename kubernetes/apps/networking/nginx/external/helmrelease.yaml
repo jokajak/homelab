@@ -30,9 +30,8 @@ spec:
             service:
                 annotations:
                     external-dns.alpha.kubernetes.io/hostname: external.${SECRET_DOMAIN}
-                    io.cilium/lb-ipam-ips: ENC[AES256_GCM,data:zD1liXSbkcRsWxQY2Gc=,iv:/RF+ct4s83XjuRzo9uN4GJ2+LdcLR3uAIOguQNuRebo=,tag:EywDrCDMiN2wGiDTYE75EQ==,type:str]
                 externalTrafficPolicy: Cluster
-                ipFamilyPolicy: RequireDualStack
+                ipFamilyPolicy: PreferDualStack
             ingressClassResource:
                 name: external
                 default: false
@@ -84,23 +83,3 @@ spec:
                     memory: 500Mi
         defaultBackend:
             enabled: false
-sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age1pr4mejfd5gvq7fvkhgs534dftetx83564rj4j2y0hat6eucjl49qp60ag5
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBhTVZZelFON0czUHlsWHpi
-            NjlqY2h3cjJ5U05DUjQxUE5zYSs3WkdBUURBCnNYWnpyOEtGS2YxVEhnL0lWcFlG
-            eW96Q1pKZC9MWWJ2ZGZicmR0OFF4YlUKLS0tIFh0dTVJdlhRTEhtRkRBdTRXRm5n
-            dHo3VGc1aVRVREVXVExMV3ZMcFJ1NGMKNno6X+5hjsx/Ayqg72/hAPkpSbuVUvfh
-            UgNYGzVrk6E6MTTLILTQ6mtcJp8tGGwHkc+L6OdCRPPG3ME0/Llsqw==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-10-04T21:38:14Z"
-    mac: ENC[AES256_GCM,data:LDb+gQoKMv5/eX9k3OPxsRHDoDYOqFT+u62e5E89VPJDp7EfMYbnKM/54LZV6aXfKU1/1CjyWM/H0Y5wgO7D4KKPvkvJhJjuSuuiLg4BfqWV6Ooa8Vbt5WY/jMU0NeUjVihh17XGsFZgJia+HSCBLX3NEADFlVRhcKHiOBZJWv8=,iv:m2WMJVNCZLroZbQJY/4/Kh5c77xBBI6S1I3QA0L1koc=,tag:Pj3ukLJ+yki8zrBJZ17IFQ==,type:str]
-    pgp: []
-    encrypted_regex: lb-ipam-ips
-    version: 3.8.0

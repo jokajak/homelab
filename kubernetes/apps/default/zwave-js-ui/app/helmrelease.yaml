@@ -67,7 +67,7 @@ spec:
         enabled: true
         ingressClassName: internal
         hosts:
-          - host: &host "zwave.int.${SECRET_DOMAIN}"
+          - host: &host "zwave.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

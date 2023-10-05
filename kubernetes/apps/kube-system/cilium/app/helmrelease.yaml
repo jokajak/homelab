@@ -70,7 +70,7 @@ spec:
           annotations:
             hajimari.io/icon: simple-icons:cilium
           hosts:
-            - &host "hubble.int.${SECRET_DOMAIN}"
+            - &host "hubble.${SECRET_DOMAIN}"
           tls:
             - hosts:
                 - *host
