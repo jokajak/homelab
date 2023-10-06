@@ -88,7 +88,6 @@ spec:
       endpoints: &cp
         - ${CONTROLLER_IP_1}
         - ${CONTROLLER_IP_2}
-        - ${CONTROLLER_IP_3}
       serviceMonitor:
         metricRelabelings:
           # Remove duplicate labels provided by k3s
