@@ -32,6 +32,9 @@ spec:
                     external-dns.alpha.kubernetes.io/hostname: internal.${SECRET_DOMAIN}
                 externalTrafficPolicy: Cluster
                 ipFamilyPolicy: PreferDualStack
+                ipFamilies:
+                - IPv4
+                - IPv6
             ingressClassResource:
                 name: internal
                 default: true
