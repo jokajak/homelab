@@ -10,4 +10,5 @@ resources:
   - ./grafana/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./kube-state-metrics/ks.yaml
+  - ./node-exporter/ks.yaml
   - ./unpoller/ks.yaml
