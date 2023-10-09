@@ -191,6 +191,6 @@ spec:
             - *host
     persistence:
       enabled: true
-      storageClassName: nfs-direct
+      storageClassName: nfs-dynamic
     testFramework:
       enabled: false
