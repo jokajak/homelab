@@ -6,4 +6,3 @@ namespace: storage
 resources:
   - ./helmrelease.yaml
   - ./storage.yaml
-  - ./test_pv.yaml
