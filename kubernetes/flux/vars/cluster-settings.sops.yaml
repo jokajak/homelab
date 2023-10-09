@@ -21,7 +21,6 @@ data:
     CONTROLLER_IP_1: ENC[AES256_GCM,data:y1e0uD2xmpRv7zxpTg==,iv:jhVppGVzPxfz0aM4+dQzm8lcbvSiEHIlHscGlolYdnw=,tag:XrPjTD/46/vNeIqzFWNnqQ==,type:str]
     CONTROLLER_IP_2: ENC[AES256_GCM,data:qQNb9DplCvT2xP+IBQ==,iv:Em+vtgwTTnJDlPWRFGNFOXcNKAln69Z9HZ6PSriS4BA=,tag:05+qoTQq5xdXZo6TTK5X2Q==,type:str]
     PIHOLE_ADDR: ENC[AES256_GCM,data:ecy5k/vEaca0itH57gg=,iv:zeMoFRP5ZDYoHP7G1hh4TQSxIFiAXQ2X13sn+W1VWMc=,tag:kFennTGyDIH1gNtFIZ7Dhw==,type:str]
-    NFS_SUBDIR_PATH: ENC[AES256_GCM,data:op8poCdpwBj6hef47ijP/mtTLzrl5q+Eomr3m0kALAk9qmCjx/0YLhwU6t6Una8M5E/edC5LSZ31UkjLbc5xsBFH,iv:SzWnISO3MMiGhQpLTXCmF73tkKQbTkjOvgXTztg1IVE=,tag:tiE2Q9Kg7SSiDYqHn/rjoQ==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -37,8 +36,8 @@ sops:
             VGhyYjVnaDN1UmlKN1RlRmR5czVxM1UKn36arzluQG8pCgi3oeHIsitieCKn61PF
             vDL7NTRoYB+TV9RS+ReL2zvaleMqM4FHSmc/pzB30bdi3OvMQY3iGA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-10-09T12:18:04Z"
-    mac: ENC[AES256_GCM,data:nivUPJalvcWcWBIv5CEOzEGkJT/CgW/M5C4Mvq5g7lmnHnidsL8VVp9HrIqzKHsCVUl0ekak/n50bANu6KWtqLxOcpJxLH8DJ0ztniaYdzKz6JFFfFCKrCSQQUtWOjvsezfmfYtMkS81yfFdWebLMZXQ66xQ/iaOpKU8t6tRgmA=,iv:Oqoq6BSOBtDMY6L40Elh1xOfCuuJbjIl7Ffbi8HCh2E=,tag:OKb9Kr8LC6yzSYGyI0Z18A==,type:str]
+    lastmodified: "2023-10-09T12:22:47Z"
+    mac: ENC[AES256_GCM,data:ZK34e9iCSb79OU2PWdXa2XlVY1A5nKiPynfXrClSWGrVMnl/Ui2/B0B0/yf1nD15MSqckt8nLfxJeNexglhekheJHZZrnz1TgInvOxIuPg6Yil7Vi0Jdvxd2eqYjjbIfArW+1oBIC1puPjuSe1G6C8mgfukVzsh6agFMOTntCBk=,iv:mVGSdbEq+G1hTTa5LZUj1YWkGN67jrItqqZNg+O+tp0=,tag:OOn6+4yZXnzp/PRr8wXC1w==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.8.0
