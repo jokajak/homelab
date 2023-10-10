@@ -25,14 +25,21 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    k8sServiceHost: "${KUBE_VIP_ADDR}"
+    k8sServicePort: 6443
+
     autoDirectNodeRoutes: true
+
     bpf:
       masquerade: true
+
     bgp:
       enabled: false
+
     cluster:
       name: home-cluster
       id: 1
+
     containerRuntime:
       integration: containerd
       socketPath: /var/run/k3s/containerd/containerd.sock
@@ -76,14 +83,22 @@ spec:
                 - *host
     ipam:
       mode: kubernetes
+
     ipv4NativeRoutingCIDR: "${CLUSTER_CIDR}"
     ipv6NativeRoutingCIDR: "${CLUSTER_CIDR_V6}"
+
+    ipv4:
+      enabled: true
+    k8s-require-ipv4-pod-cidr: true
     ipv6:
       enabled: true
-    k8sServiceHost: "${KUBE_VIP_ADDR}"
-    k8sServicePort: 6443
-    kubeProxyReplacement: true
+    k8s-require-ipv6-pod-cidr: true
+    enableIPv6Masquerade: false
+
+    kubeProxyReplacement: strict
+
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+
     l2announcements:
       enabled: true
       # Values are high due to https://github.com/cilium/cilium/issues/26586
@@ -123,3 +138,6 @@ spec:
     securityContext:
       privileged: true
     tunnel: disabled
+    extraConfig:
+      enable-ipv6-ndp: "true"
+      ipv6-service-range: ${SERVICE_CIDR_V6}
