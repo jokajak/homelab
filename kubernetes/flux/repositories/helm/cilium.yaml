@@ -7,3 +7,13 @@ metadata:
 spec:
   interval: 2h
   url: https://helm.cilium.io
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: cilium-dev
+  namespace: flux-system
+spec:
+  type: oci
+  interval: 2h
+  url: oci://quay.io/cilium-charts-dev/cilium
