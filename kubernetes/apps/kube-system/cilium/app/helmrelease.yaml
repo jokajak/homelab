@@ -25,7 +25,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image: 1.15.0-dev-dev.139-HEAD-966d9107a1
+    image:
+      override: 1.15.0-dev-dev.139-HEAD-966d9107a1
     k8sServiceHost: "${KUBE_VIP_ADDR}"
     k8sServicePort: 6443
 
