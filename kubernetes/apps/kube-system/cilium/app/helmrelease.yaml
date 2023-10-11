@@ -9,10 +9,10 @@ spec:
   chart:
     spec:
       chart: cilium
-      version: 1.13.7
+      version: 1.15.0-dev-dev.139-HEAD-966d9107a1
       sourceRef:
         kind: HelmRepository
-        name: cilium
+        name: cilium-dev
         namespace: flux-system
   maxHistory: 2
   install:
