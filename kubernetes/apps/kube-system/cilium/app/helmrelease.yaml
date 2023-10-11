@@ -26,7 +26,7 @@ spec:
     keepHistory: false
   values:
     image:
-      override: quay.io/cilium-charts-dev/cilium:1.15.0-dev-dev.139-main-fae1464c11
+      override: quay.io/cilium/cilium-ci:latest
     k8sServiceHost: "${KUBE_VIP_ADDR}"
     k8sServicePort: 6443
 
