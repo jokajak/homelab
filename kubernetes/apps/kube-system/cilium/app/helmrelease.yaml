@@ -86,8 +86,8 @@ spec:
     ipam:
       mode: kubernetes
 
-    ipv4NativeRoutingCIDR: "${CLUSTER_CIDR}"
-    ipv6NativeRoutingCIDR: "${CLUSTER_CIDR_V6}"
+    # ipv4NativeRoutingCIDR: "${CLUSTER_CIDR}"
+    # ipv6NativeRoutingCIDR: "${CLUSTER_CIDR_V6}"
 
     ipv4:
       enabled: true
@@ -95,6 +95,7 @@ spec:
     ipv6:
       enabled: true
     k8s-require-ipv6-pod-cidr: true
+
     enableIPv6Masquerade: false
 
     kubeProxyReplacement: strict
@@ -116,6 +117,7 @@ spec:
       algorithm: maglev
       mode: dsr
     localRedirectPolicy: true
+
     operator:
       replicas: 1
       rollOutPods: true
