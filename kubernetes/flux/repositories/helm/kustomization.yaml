@@ -18,7 +18,7 @@ resources:
   - ./metrics-server.yaml
   - ./prometheus-community.yaml
   - ./stakater.yaml
-  - ./weave-gitops.yaml
+  - ./weaveworks.yaml
   - ./cert-manager-webhook-henet.yaml
   - ./cert-manager-webhook-he.yaml
   - ./node-feature-discovery.yaml
