@@ -92,11 +92,6 @@ spec:
     ipv4:
       enabled: true
     k8s-require-ipv4-pod-cidr: true
-    ipv6:
-      enabled: false
-    k8s-require-ipv6-pod-cidr: false
-
-    enableIPv6Masquerade: false
 
     kubeProxyReplacement: strict
 
@@ -142,6 +137,13 @@ spec:
     securityContext:
       privileged: true
     tunnel: disabled
-    extraConfig:
-      enable-ipv6-ndp: "true"
-      ipv6-service-range: ${SERVICE_CIDR_V6}
+
+    ipv6:
+      enabled: false
+    k8s-require-ipv6-pod-cidr: false
+
+    enableIPv6Masquerade: false
+
+    # extraConfig:
+    #   enable-ipv6-ndp: "true"
+    #   ipv6-service-range: ${SERVICE_CIDR_V6}
