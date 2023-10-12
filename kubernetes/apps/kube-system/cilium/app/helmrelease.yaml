@@ -87,14 +87,14 @@ spec:
       mode: kubernetes
 
     ipv4NativeRoutingCIDR: "${CLUSTER_CIDR}"
-    # ipv6NativeRoutingCIDR: "${CLUSTER_CIDR_V6}"
+    ipv6NativeRoutingCIDR: "${CLUSTER_CIDR_V6}"
 
     ipv4:
       enabled: true
     k8s-require-ipv4-pod-cidr: true
     ipv6:
-      enabled: true
-    k8s-require-ipv6-pod-cidr: true
+      enabled: false
+    k8s-require-ipv6-pod-cidr: false
 
     enableIPv6Masquerade: false
 
