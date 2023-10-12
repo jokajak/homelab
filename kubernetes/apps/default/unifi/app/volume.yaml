@@ -31,7 +31,7 @@ metadata:
   name: unifi-config
   namespace: default
   labels:
-    app.kubernetes.io/name: *name
+    app.kubernetes.io/name: &name unifi
     app.kubernetes.io/instance: *name
 spec:
   accessModes:
