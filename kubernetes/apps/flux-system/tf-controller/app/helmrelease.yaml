@@ -34,9 +34,9 @@ spec:
     awsPackage:
       install: false
     runner:
+      grpc:
+        # due to received message larger than max (5685919 vs. 4194304)
+        maxMessageSize: 10
       image:
         repository: ghcr.io/jokajak/tf-runner-bw
         tag: v0.16.0-rc.2_1.6.1_2023.9.0
-        grpc:
-          # due to received message larger than max (5685919 vs. 4194304)
-          maxMessageSize: 10
