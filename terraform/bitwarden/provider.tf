@@ -12,7 +12,7 @@ terraform {
 }
 
 provider "bitwarden" {
-  master_password = data.sops_file.this.data["BW_PASSWORd"]
+  master_password = data.sops_file.this.data["BW_PASSWORD"]
   client_id       = data.sops_file.this.data["BW_CLIENTID"]
   client_secret   = data.sops_file.this.data["BW_CLIENTSECRET"]
   email           = data.sops_file.this.data["BW_EMAIL"]

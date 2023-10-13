@@ -55,3 +55,5 @@ RUN curl -L https://github.com/bitwarden/clients/releases/download/cli-v${BW_CLI
   rm -rfv *.zip
 
 RUN dnf clean all
+
+RUN install -d /root/.config/sops/age/
