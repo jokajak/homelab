@@ -3,7 +3,7 @@ variable "terraform_organization" {
   description = "My Cloud Organization"
 }
 
-variable "collection_ids" {
-  type        = list(string)
+variable "collection_id" {
+  type        = string
   description = "Collection to store resources in"
 }

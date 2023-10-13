@@ -21,7 +21,7 @@ spec:
       name: cluster-secrets
       varsKeys:
         - BW_ORGANIZATION_ID:terraform_organization
-        - BW_COLLECTION_IDS:collection_ids
+        - BW_COLLECTION_ID:collection_id
   runnerPodTemplate:
     spec:
       volumeMounts:
