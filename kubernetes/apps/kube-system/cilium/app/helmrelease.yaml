@@ -144,6 +144,6 @@ spec:
 
     enableIPv6Masquerade: false
 
-    # extraConfig:
-    #   enable-ipv6-ndp: "true"
+    extraConfig:
+      enable-ipv6-ndp: "false"
     #   ipv6-service-range: ${SERVICE_CIDR_V6}
