@@ -16,6 +16,17 @@ spec:
     namespace: flux-system
   runnerPodTemplate:
     spec:
+      env:
+        - name: TF_VAR_terraform_organization
+          valueFrom:
+            secretKeyRef:
+              name: cluster-secrets
+              key: BW_ORGANIZATION_ID
+        - name: TF_VAR_collection_ids
+          valueFrom:
+            secretKeyRef:
+              name: cluster-secrets
+              key: BW_COLLECTION_IDS
       volumeMounts:
         - name: sops
           mountPath: /home/runner/.config/sops/age/keys.txt

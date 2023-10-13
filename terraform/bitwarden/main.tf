@@ -9,7 +9,9 @@ resource "random_password" "minio_password" {
 }
 
 resource "bitwarden_item_login" "minio" {
-  folder_id = bitwarden_folder.kubernetes_credentials.id
+  organization_id = var.terraform_organization
+  collection_ids  = var.collection_ids
+  folder_id       = bitwarden_folder.kubernetes_credentials.id
 
   name     = "minio credentials"
   username = "Recoil7901"
