@@ -16,19 +16,14 @@ spec:
     namespace: flux-system
   writeOutputsToSecret:
     name: bitwarden-outputs
+  varsFrom:
+    - kind: Secret
+      name: cluster-secrets
+      varsKeys:
+        - BW_ORGANIZATION_ID:terraform_organization
+        - BW_COLLECTION_IDS:collection_ids
   runnerPodTemplate:
     spec:
-      env:
-        - name: TF_VAR_terraform_organization
-          valueFrom:
-            secretKeyRef:
-              name: cluster-secrets
-              key: BW_ORGANIZATION_ID
-        - name: TF_VAR_collection_ids
-          valueFrom:
-            secretKeyRef:
-              name: cluster-secrets
-              key: BW_COLLECTION_IDS
       volumeMounts:
         - name: sops
           mountPath: /home/runner/.config/sops/age/keys.txt
