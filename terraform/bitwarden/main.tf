@@ -17,3 +17,7 @@ resource "bitwarden_item_login" "minio" {
   username = "Recoil7901"
   password = random_password.minio_password.result
 }
+
+output "minio_secrets" {
+  value = bitwarden_item_login.minio.id
+}
