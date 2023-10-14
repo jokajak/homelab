@@ -13,6 +13,22 @@ resource "bitwarden_item_login" "minio" {
   password = random_password.minio_password.result
 }
 
-output "minio_secrets" {
-  value = bitwarden_item_login.minio.id
+resource "random_password" "cloudnative_pg_user" {
+  length  = 16
+  special = false
+}
+
+resource "random_password" "cloudnative_pg_password" {
+  length           = 32
+  special          = true
+  override_special = "_=+-,~"
+}
+
+resource "bitwarden_item_login" "cloudnative_pg" {
+  organization_id = var.terraform_organization
+  collection_ids  = [var.collection_id]
+
+  name     = "cloudnative_pg credentials"
+  username = random_password.cloudnative_pg_user.result
+  password = random_password.minio_password.result
 }
