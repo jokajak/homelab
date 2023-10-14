@@ -45,7 +45,7 @@ spec:
       MINIO_API_CORS_ALLOW_ORIGIN: https://minio.${SECRET_DOMAIN},https://s3.${SECRET_DOMAIN}
     envFrom:
       - secretRef:
-          name: minio-secret
+          name: minio-secrets
 
     service:
       main:
