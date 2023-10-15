@@ -60,3 +60,20 @@ resource "bitwarden_item_login" "authentik" {
   name     = "authentik credentials"
   password = random_password.authentik_secret_key.result
 }
+
+################################################################################
+# weave credentials
+################################################################################
+resource "random_password" "weave_password" {
+  length           = 50
+  special          = true
+  override_special = "_=+-,~"
+}
+
+resource "bitwarden_item_login" "weave" {
+  organization_id = var.terraform_organization
+  collection_ids  = [var.collection_id]
+
+  name     = "weave credentials"
+  password = random_password.weave_password.result
+}
