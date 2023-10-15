@@ -16,7 +16,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: ${SECRET_NFS_SERVER}
-    path: "${SECRET_NFS_PATH}/unifi"
+    path: "${SECRET_NFS_PATH}/home-assistant"
   mountOptions:
   - nfsvers=4.1
   - tcp
