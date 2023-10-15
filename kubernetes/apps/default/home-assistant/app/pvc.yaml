@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: &name home-assistant
     app.kubernetes.io/instance: *name
 spec:
-  storageClassName: home-assistant
+  storageClassName: nfs-home-assistant
   capacity:
     storage: 1Gi
   accessModes:
