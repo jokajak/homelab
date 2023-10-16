@@ -58,13 +58,11 @@ spec:
           hajimari.io/icon: "vscode-icons:file-type-homeassistant"
         hosts:
           - host: &host "home.${SECRET_DOMAIN}"
-            http:
-              paths:
-                - path: /
-                  pathType: Prefix
-                  service:
-                    name: main
-                    port: http
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
