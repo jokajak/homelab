@@ -56,6 +56,7 @@ spec:
         className: external
         annotations:
           hajimari.io/icon: "vscode-icons:file-type-homeassistant"
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
         hosts:
           - host: &host "home.${SECRET_DOMAIN}"
             paths:
