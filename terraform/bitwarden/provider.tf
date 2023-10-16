@@ -18,3 +18,11 @@ provider "bitwarden" {
   email           = data.sops_file.this.data["BW_EMAIL"]
   server          = "https://vault.bitwarden.com"
 }
+
+terraform {
+  backend "kubernetes" {
+    namespace     = "flux-system"
+    secret_suffix = "bitwarden"
+    config_path   = "~/.kube/config"
+  }
+}
