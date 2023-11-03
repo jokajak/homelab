@@ -2,3 +2,4 @@
 # defaults file for openwrt
 openwrt_packages:
 - luci-app-advanced-reboot
+- luci-mod-rpc

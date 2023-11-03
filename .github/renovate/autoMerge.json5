@@ -16,6 +16,14 @@
       "automergeType": "branch",
       "ignoreTests": true,
       "matchUpdateTypes": ["digest"]
+    },
+    {
+      "description": "Auto merge minor updates",
+      "matchDatasources": ["flux", "kubernetes", "helm-values"],
+      "automerge": true,
+      "automergeType": "branch",
+      "ignoreTests": false,
+      "matchUpdateTypes": ["minor", "patch"]
     }
   ]
 }
