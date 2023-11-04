@@ -1,4 +1,4 @@
-ARG TERRAFORM_VERSION=1.6.2
+ARG TERRAFORM_VERSION=1.6.3
 # renovate: datasource=github-releases depName=getsops/sops extractVersion=^v(?<version>.*)$
 ARG SOPS_VERSION=3.8.0
 # renovate: datasource=github-releases depName=FiloSottile/age extractVersion=^v(?<version>.*)$
