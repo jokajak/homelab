@@ -53,7 +53,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: external
+        className: internal
         annotations:
           hajimari.io/icon: "vscode-icons:file-type-homeassistant"
         hosts:
