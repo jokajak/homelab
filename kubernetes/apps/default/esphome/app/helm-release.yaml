@@ -5,7 +5,7 @@ metadata:
   name: esphome
   namespace: default
 spec:
-  interval: 10m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      interval: 10m
+      interval: 30m
   maxHistory: 3
   install:
     createNamespace: true
@@ -24,6 +24,8 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controllers:
       main:
@@ -31,17 +33,16 @@ spec:
       containers:
         main:
           image:
-            repository: esphome/esphome
+            repository: ghcr.io/esphome/esphome
             tag: 2023.10.6
           env:
             ESPHOME_DASHBOARD_USE_PING: true
-          probes:
-            liveness:
-              enabled: false
-            readiness:
-              enabled: false
-            startup:
-              enabled: false
+          resources:
+            requests:
+              cpu: 5m
+              memory: 500Mi
+            limits:
+              memory: 2Gi
     service:
       main:
         ports:
@@ -68,11 +69,7 @@ spec:
         existingClaim: esphome-config
         globalMounts:
           - path: /config
-    resources:
-      requests:
-        cpu: 100m
-        memory: 500Mi
-      limits:
-        memory: 4Gi
-    metrics:
-      enabled: true
+      esphome-cache:
+        type: emptydir
+        globalMounts:
+          - path: /config/.esphome
