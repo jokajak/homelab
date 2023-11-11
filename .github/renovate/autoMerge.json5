@@ -19,7 +19,7 @@
     },
     {
       "description": "Auto merge minor updates",
-      "matchDatasources": ["flux", "kubernetes", "helm-values"],
+      "matchDatasources": ["container", "helm"],
       "automerge": true,
       "automergeType": "branch",
       "ignoreTests": false,
