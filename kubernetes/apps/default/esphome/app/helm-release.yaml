@@ -28,19 +28,19 @@ spec:
     controllers:
       main:
         type: statefulset
-      containers:
-        main:
-          image:
-            repository: ghcr.io/esphome/esphome
-            tag: 2023.10.6
-          env:
-            ESPHOME_DASHBOARD_USE_PING: true
-          resources:
-            requests:
-              cpu: 5m
-              memory: 500Mi
-            limits:
-              memory: 2Gi
+        containers:
+          main:
+            image:
+              repository: ghcr.io/esphome/esphome
+              tag: 2023.10.6
+            env:
+              ESPHOME_DASHBOARD_USE_PING: true
+            resources:
+              requests:
+                cpu: 5m
+                memory: 500Mi
+              limits:
+                memory: 2Gi
     service:
       main:
         ports:
