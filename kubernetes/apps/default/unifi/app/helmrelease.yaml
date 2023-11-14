@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.2.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -27,17 +27,33 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    image:
-      repository: jacobalberty/unifi
-      tag: v7.5.176
-      pullPolicy: IfNotPresent
-    env:
-      RUNAS_UID0: "false"
-      UNIFI_UID: "999"
-      UNIFI_GID: "999"
-      UNIFI_STDOUT: "true"
-      JVM_INIT_HEAP_SIZE:
-      JVM_MAX_HEAP_SIZE: 1024M
+    controllers:
+      main:
+        type: statefulset
+        containers:
+          main:
+            image:
+              repository: jacobalberty/unifi
+              tag: v7.5.176
+              pullPolicy: IfNotPresent
+            env:
+              RUNAS_UID0: "false"
+              UNIFI_UID: "999"
+              UNIFI_GID: "999"
+              UNIFI_STDOUT: "true"
+              JVM_INIT_HEAP_SIZE:
+              JVM_MAX_HEAP_SIZE: 1024M
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+            resources:
+              requests:
+                memory: 2Gi
+                cpu: 50m
     service:
       main:
         type: LoadBalancer
@@ -78,23 +94,24 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "internal"
+        className: internal
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           hajimari.io/icon: mdi:lan
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: &host "unifi.${SECRET_DOMAIN}"
             paths:
               - path: /
+                service:
+                  name: main
+                  port: http
         tls:
           - hosts:
               - *host
+            secretName: wildcard-cert-tls
     persistence:
       config:
         enabled: true
         existingClaim: unifi-config
-        mountPath: /unifi
-    resources:
-      requests:
-        memory: 2Gi
-        cpu: 50m
+        globalMounts:
+          - path: /unifi

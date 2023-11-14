@@ -7,5 +7,6 @@ resources:
   # flux kustomizations
   - ./esphome/ks.yaml
   - ./home-assistant/ks.yaml
-  - ./unifi/ks.yaml
+  # disabled to upgrade from 1.5.1 to 2.2.0
+  # - ./unifi/ks.yaml
   - ./zwave-js-ui/ks.yaml
