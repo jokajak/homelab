@@ -71,6 +71,7 @@ spec:
         globalMounts:
           - path: /config
       esphome-cache:
-        type: emptydir
+        enabled: true
+        type: emptyDir
         globalMounts:
           - path: /config/.esphome
