@@ -67,7 +67,8 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: esphome-config
+        type: persistentVolumeClaim
+        storageClass: nfs-dynamic
         globalMounts:
           - path: /config
       esphome-cache:
