@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -9,105 +10,88 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.2.0
+      interval: 30m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  uninstall:
-    keepHistory: false
+
   values:
-    image:
-      repository: quay.io/minio/minio
-      tag: RELEASE.2023-09-27T15-22-50Z
+    controllers:
+      main:
+        type: statefulset
 
-    controller:
-      annotations:
-        reloader.stakater.com/auto: "true"
+        annotations:
+          reloader.stakater.com/auto: "true"
 
-    env:
-      TZ: America/New_York
-      MINIO_UPDATE: "off"
-      MINIO_PROMETHEUS_URL: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
-      MINIO_PROMETHEUS_JOB_ID: minio
-      MINIO_PROMETHEUS_AUTH_TYPE: public
-      MINIO_BROWSER_REDIRECT_URL: https://minio.${SECRET_DOMAIN}
-      MINIO_SERVER_URL: https://s3.${SECRET_DOMAIN}
-      MINIO_API_CORS_ALLOW_ORIGIN: https://minio.${SECRET_DOMAIN},https://s3.${SECRET_DOMAIN}
-    envFrom:
-      - secretRef:
-          name: minio-secrets
+        containers:
+          main:
+            image:
+              repository: quay.io/minio/minio
+              tag: RELEASE.2023-11-11T08-14-41Z
+            args:
+              - server
+              - /data
+              - --console-address
+              - :9001
+            env:
+              TZ: America/New_York
+              MINIO_UPDATE: "off"
+              MINIO_PROMETHEUS_URL: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+              MINIO_PROMETHEUS_JOB_ID: minio
+              MINIO_PROMETHEUS_AUTH_TYPE: public
+              MINIO_BROWSER_REDIRECT_URL: https://minio.${SECRET_DOMAIN}
+              MINIO_SERVER_URL: https://s3.${SECRET_DOMAIN}
+              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.${SECRET_DOMAIN},https://s3.${SECRET_DOMAIN}
+              MINIO_ROOT_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: minio-secrets
+                    key: MINIO_ROOT_USER
+              MINIO_ROOT_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: minio-secrets
+                    key: MINIO_ROOT_PASSWORD
+            resources:
+              requests:
+                cpu: 5m
+                memory: 128M
+            securityContext:
+              privileged: true
+              runAsUser: 0
 
     service:
       main:
         ports:
           http:
-            port: &console-port 9001
-          api:
-            enabled: true
-            port: &api-port 9000
-    args:
-      - server
-      - /data
-      - --console-address
-      - :9001
-
-    persistence:
-      config:
-        enabled: true
-        existingClaim: nfs-minio
-        mountPath: /data
+            port: 9001
+          s3:
+            port: 9000
 
     ingress:
       main:
         enabled: true
-        primary: true
-        ingressClassName: internal
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.0.0/16"
-          # nginx.ingress.kubernetes.io/auth-url: "https://auth.${SECRET_DOMAIN}/oauth2/auth"
-          # nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_DOMAIN}/oauth2/start
+        className: internal
         hosts:
-          - host: minio.${SECRET_DOMAIN}
+          - host: "minio.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
                 service:
-                  port: *console-port
-        tls:
-          - hosts:
-            - "minio.${SECRET_DOMAIN}"
-      s3:
-        enabled: true
-        ingressClassName: internal
-        annotations:
-          nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.0.0/16"
-        hosts:
-          - host: s3.${SECRET_DOMAIN}
+                  name: main
+                  port: http
+          - host: "s3.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
                 service:
-                  port: *api-port
-        tls:
-          - hosts:
-            - "s3.${SECRET_DOMAIN}"
+                  name: main
+                  port: s3
 
-    serviceMonitor:
-      main:
+    persistence:
+      data:
         enabled: true
-        endpoints:
-          - port: api
-            scheme: http
-            path: /minio/v2/metrics/cluster
-            interval: 1m
-            scrapeTimeout: 10s
+        type: persistentVolumeClaim
+        existingClaim: nfs-minio
+        globalMounts:
+          - path: /data
