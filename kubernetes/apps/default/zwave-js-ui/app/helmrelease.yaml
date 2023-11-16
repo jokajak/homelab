@@ -32,6 +32,8 @@ spec:
   values:
     controllers:
       main:
+        nodeSelector:
+          zwave.feature.node.kubernetes.io/zwave: "true"
         type: statefulset
         statefulset:
           volumeClaimTemplates:
@@ -42,8 +44,6 @@ spec:
               storageClass: nfs-dynamic
         containers:
           main:
-            nodeSelector:
-              zwave.feature.node.kubernetes.io/zwave: "true"
             image:
               repository: ghcr.io/zwave-js/zwave-js-ui
               tag: 9.3.2
