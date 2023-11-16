@@ -9,6 +9,7 @@ resources:
   - ./csi-driver-nfs.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
+  - ./bitwarden-eso.yaml
   - ./grafana.yaml
   - ./hajimari.yaml
   - ./ingress-nginx.yaml
