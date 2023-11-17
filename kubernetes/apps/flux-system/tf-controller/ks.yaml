@@ -24,7 +24,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-external-secrets
     - name: cluster-apps-tf-controller
   path: ./kubernetes/apps/flux-system/tf-controller/terraform
   prune: true

@@ -17,4 +17,4 @@ spec:
       - kind: Secret
         name: cluster-secrets
   dependsOn:
-    - name: cluster-apps-external-secrets-stores
+    - name: cluster-apps-external-secrets
