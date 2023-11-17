@@ -32,8 +32,6 @@ spec:
   values:
     controllers:
       main:
-        nodeSelector:
-          zwave.feature.node.kubernetes.io/zwave: "true"
         type: statefulset
         statefulset:
           volumeClaimTemplates:
@@ -42,6 +40,9 @@ spec:
               accessMode: ReadWriteOnce
               size: 1Gi
               storageClass: nfs-dynamic
+        pod:
+          nodeSelector:
+            zwave.feature.node.kubernetes.io/zwave: "true"
         containers:
           main:
             image:
