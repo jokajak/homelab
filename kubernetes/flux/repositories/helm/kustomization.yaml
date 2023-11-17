@@ -3,13 +3,16 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./bitnami.yaml
+  - ./bitwarden-eso.yaml
   - ./bjw-s.yaml
+  - ./cert-manager-webhook-he.yaml
+  - ./cert-manager-webhook-henet.yaml
   - ./cilium.yaml
+  - ./cloudnative-pg.yaml
   - ./coredns.yaml
   - ./csi-driver-nfs.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
-  - ./bitwarden-eso.yaml
   - ./grafana.yaml
   - ./hajimari.yaml
   - ./ingress-nginx.yaml
@@ -17,9 +20,7 @@ resources:
   - ./k8s-gateway.yaml
   - ./kubernetes-dashboard.yaml
   - ./metrics-server.yaml
+  - ./node-feature-discovery.yaml
   - ./prometheus-community.yaml
   - ./stakater.yaml
   - ./weaveworks.yaml
-  - ./cert-manager-webhook-henet.yaml
-  - ./cert-manager-webhook-he.yaml
-  - ./node-feature-discovery.yaml
