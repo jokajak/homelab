@@ -33,13 +33,6 @@ spec:
     controllers:
       main:
         type: statefulset
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              mountPath: /usr/src/app/store
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: nfs-dynamic
         pod:
           nodeSelector:
             zwave.feature.node.kubernetes.io/zwave: "true"
@@ -103,3 +96,14 @@ spec:
         hostPathType: CharDevice
         globalMounts:
           - path: /dev/serial/by-id/usb-Silicon_Labs_Zooz_ZST10 700_Z-Wave_Stick_3038cec081e9eb118feea08787c335f3-if00-port0
+      config:
+        enabled: true
+        type: persistentvolumeclaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: nfs-dynamic
+        retain: true
+        existingClaim: config-zwave-js-ui-0
+        globalMounts:
+          - path: /usr/src/app/store
+            readOnly: false
