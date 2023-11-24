@@ -37,6 +37,6 @@ spec:
             items:
               - key: age.agekey
                 path: keys.txt
-        - name: bitwarden
+        - name: bitwarden-data
           persistentVolumeClaim:
             claimName: tf-bitwarden-pvc
