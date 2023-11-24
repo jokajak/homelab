@@ -11,3 +11,16 @@ spec:
     requests:
       storage: 1Gi # Adjust the storage size as needed
   storageClassName: nfs-dynamic
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tf-minio-pvc
+  namespace: flux-system
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi # Adjust the storage size as needed
+  storageClassName: nfs-dynamic

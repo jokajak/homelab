@@ -22,6 +22,12 @@ resource "bitwarden_item_login" "minio" {
     value = "https://minio.${local.domain}"
     match = "host"
   }
+
+  field {
+    name = "terraform"
+    text = "true"
+  }
+
 }
 
 ################################################################################
@@ -45,6 +51,11 @@ resource "bitwarden_item_login" "cloudnative_pg" {
   name     = "cloudnative_pg credentials"
   username = random_password.cloudnative_pg_user.result
   password = random_password.cloudnative_pg_password.result
+
+  field {
+    name = "terraform"
+    text = "true"
+  }
 }
 
 ################################################################################
@@ -67,6 +78,11 @@ resource "bitwarden_item_login" "authentik" {
     value = "https://auth.${local.domain}"
     match = "host"
   }
+
+  field {
+    name = "terraform"
+    text = "true"
+  }
 }
 
 resource "random_password" "authentik_redis_secret" {
@@ -82,6 +98,10 @@ resource "bitwarden_item_login" "authentik_redis" {
   name     = "authentik redis"
   password = random_password.authentik_redis_secret.result
 
+  field {
+    name = "terraform"
+    text = "true"
+  }
 }
 
 ################################################################################
@@ -99,6 +119,11 @@ resource "bitwarden_item_login" "weave" {
 
   name     = "weave credentials"
   password = random_password.weave_password.result
+
+  field {
+    name = "terraform"
+    text = "true"
+  }
 }
 
 ################################################################################
@@ -122,4 +147,9 @@ resource "bitwarden_item_login" "mosquitto" {
   name     = "mosquitto credentials"
   username = random_password.mosquitto_username.result
   password = random_password.mosquitto_password.result
+
+  field {
+    name = "terraform"
+    text = "true"
+  }
 }
