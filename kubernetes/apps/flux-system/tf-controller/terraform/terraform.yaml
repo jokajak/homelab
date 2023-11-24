@@ -64,6 +64,7 @@ spec:
       varsKeys:
         - BW_ORGANIZATION_ID:terraform_organization
         - BW_COLLECTION_ID:collection_id
+        - SECRET_DOMAIN:domain
     - kind: Secret
       name: bitwarden-outputs
       varsKeys:

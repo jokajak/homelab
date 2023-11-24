@@ -24,7 +24,7 @@ provider "bitwarden" {
 }
 
 provider "minio" {
-  minio_server   = "s3.${SECRET_DOMAIN}"
+  minio_server   = "s3.${var.domain}"
   minio_user     = data.bitwarden_item_login.minio_secret.username
   minio_password = data.bitwarden_item_login.minio_secret.password
   minio_ssl      = true

@@ -18,3 +18,8 @@ variable "collection_id" {
   type        = string
   description = "Collection to store resources in"
 }
+
+variable "domain" {
+  type        = string
+  description = "The domain for the server"
+}
