@@ -64,7 +64,7 @@ resource "bitwarden_item_login" "authentik" {
   password = random_password.authentik_secret_key.result
 
   uri {
-    value = "https://auth.${local.domain}]}"
+    value = "https://auth.${local.domain}"
     match = "host"
   }
 }
