@@ -64,6 +64,10 @@ spec:
       varsKeys:
         - BW_ORGANIZATION_ID:terraform_organization
         - BW_COLLECTION_ID:collection_id
+    - kind: Secret
+      name: bitwarden-outputs
+      varsKeys:
+        - minio_secret_id:minio_secret_id
   runnerPodTemplate:
     spec:
       volumeMounts:
