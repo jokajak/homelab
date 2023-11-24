@@ -69,6 +69,21 @@ resource "bitwarden_item_login" "authentik" {
   }
 }
 
+resource "random_password" "authentik_redis_secret" {
+  length           = 32
+  special          = true
+  override_special = "_=+-,~"
+}
+
+resource "bitwarden_item_login" "authentik_redis" {
+  organization_id = var.terraform_organization
+  collection_ids  = [var.collection_id]
+
+  name     = "authentik redis"
+  password = random_password.authentik_redis_secret.result
+
+}
+
 ################################################################################
 # weave credentials
 ################################################################################

@@ -22,6 +22,7 @@ data:
     CONTROLLER_IP_2: ENC[AES256_GCM,data:qQNb9DplCvT2xP+IBQ==,iv:Em+vtgwTTnJDlPWRFGNFOXcNKAln69Z9HZ6PSriS4BA=,tag:05+qoTQq5xdXZo6TTK5X2Q==,type:str]
     PIHOLE_ADDR: ENC[AES256_GCM,data:ecy5k/vEaca0itH57gg=,iv:zeMoFRP5ZDYoHP7G1hh4TQSxIFiAXQ2X13sn+W1VWMc=,tag:kFennTGyDIH1gNtFIZ7Dhw==,type:str]
     NFS_SUBDIR_PATH: ENC[AES256_GCM,data:4ERwNHCEAF/PBN2UTzNXFaKFlDLxnfFge67j6iprmb8f4EoCZ6QfsRTNQC5ghr5EpA5mYbaSoGf5bYgf9VXtqudScx/m,iv:Du8IZfrjbAQgYM/jdbw9y4W1VHZpsgNrZwearQNhamk=,tag:q5jQwat81nrCAtPuXbzYfA==,type:str]
+    BITWARDEN_APP_ID: ENC[AES256_GCM,data:seTkkj4MuPg10I11vkoBtdZhHmQ1W15rBvEP8VQ09psTS1kb6CPR7yvEeaAG7UVtyg==,iv:DvbgD8ZK/jgJJHfm31iZwmJcDtfwsx+Xqa1hB8TDp+U=,tag:aGlvkTL48hBaYrdY+g55zA==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -37,8 +38,8 @@ sops:
             VGhyYjVnaDN1UmlKN1RlRmR5czVxM1UKn36arzluQG8pCgi3oeHIsitieCKn61PF
             vDL7NTRoYB+TV9RS+ReL2zvaleMqM4FHSmc/pzB30bdi3OvMQY3iGA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-10-09T13:16:00Z"
-    mac: ENC[AES256_GCM,data:/NY5VA0HZmPX/YwIDicBHC32mT3++dQQrD6EykW9TwnhB+OS5Q0/zCI9X8LoB/qVFojUFKp6CjCiDItUJ9M2M+vQVrZWD0kKHzdOt5Ca4ZVofMz4/g6jnxHSj28NY6xmyO34a/WB7ZIZ/lWY67H8/2B2BS8LGpNxyPhn+xrU5vI=,iv:AEvaGbLF3XRIbYjcbRYO1b2+kTJqTCJ51xs/PH2e2To=,tag:tHUIWEd9A3Tj8AoUvNtlxQ==,type:str]
+    lastmodified: "2023-11-24T20:43:28Z"
+    mac: ENC[AES256_GCM,data:tsoyGrShdswlQfrTmfHJGRc49t58bI4W7FwGhMAXNhNGz/FmQD4JdhR4HHACB9EsBdLrmgJ3O983ymvB3INYPItr3YJFb1jC5p5ZZ0scA2ENZtYfL0qFXSuUptqlnvJ6Zk3navrtGOU5um1+jMwhi6jaOfNYIhbhN4M25ZbxQ5o=,iv:BWojuuzIJEc9BHrFHu+t5ETTQSNvxdtAZKcR9jjAkeU=,tag:Gea5q2xJ1JnwxtzHxs2rag==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.8.0
