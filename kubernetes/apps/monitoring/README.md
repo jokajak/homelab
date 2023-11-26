@@ -1,12 +1,18 @@
-# loki
+# Monitoring
+
+This directory contains applications related to monitoring
+
+## Loki
+
+Loki is a log aggregation application.
 
 ![](https://i.imgur.com/bdN7Grj.png)
 
-https://github.com/grafana/loki
+<https://github.com/grafana/loki>
 
 * [loki/loki.yaml](loki/loki.yaml)
 
-# vector
+## vector
 
 Using [vector](https://github.com/vectordotdev/vector) instead of promtail to feed logs to loki.
 
