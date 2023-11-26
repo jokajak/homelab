@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: vector
   dependsOn:
-    - name: external-secrets
+    - name: cluster-apps-external-secrets
   path: ./kubernetes/apps/monitoring/vector/app
   prune: true
   sourceRef:
