@@ -28,8 +28,8 @@ spec:
   dependsOn:
     - name: local-path-provisioner
       namespace: kube-system
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+    - name: minio
+      namespace: storage
   values:
     loki:
       structuredConfig:
