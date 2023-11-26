@@ -30,8 +30,7 @@ spec:
         password: ${BW_PASSWORD}
         clientSecret: ${BW_CLIENTSECRET}
         clientID: ${BW_CLIENTID}
-    network_policy:
-      enabled: false # use cilium policy instead
+    network_policy: false
     resources:
       requests:
         memory: 256Mi
