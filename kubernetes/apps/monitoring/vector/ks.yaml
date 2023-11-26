@@ -3,13 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app vector
+  name: cluster-apps-monitoring-vector
   namespace: flux-system
 spec:
   targetNamespace: monitoring
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: vector
   dependsOn:
     - name: external-secrets
   path: ./kubernetes/apps/monitoring/vector/app
