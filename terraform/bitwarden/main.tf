@@ -127,29 +127,35 @@ resource "bitwarden_item_login" "weave" {
 }
 
 ################################################################################
-# mosquitto credentials
+# grafana credentials
 ################################################################################
-resource "random_password" "mosquitto_username" {
+resource "random_password" "grafana_username" {
   length  = 16
   special = false
 }
 
-resource "random_password" "mosquitto_password" {
+resource "random_password" "grafana_password" {
   length           = 32
   special          = true
   override_special = "_=+-,~"
 }
 
-resource "bitwarden_item_login" "mosquitto" {
+resource "bitwarden_item_login" "grafana" {
   organization_id = var.terraform_organization
   collection_ids  = [var.collection_id]
 
-  name     = "mosquitto credentials"
-  username = random_password.mosquitto_username.result
-  password = random_password.mosquitto_password.result
+  name     = "grafana credentials"
+  username = random_password.grafana_username.result
+  password = random_password.grafana_password.result
 
   field {
     name = "terraform"
     text = "true"
   }
+
+  uri {
+    value = "https://grafana.${local.domain}"
+    match = "host"
+  }
+
 }
