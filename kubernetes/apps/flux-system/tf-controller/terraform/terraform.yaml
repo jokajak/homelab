@@ -50,6 +50,7 @@ metadata:
 spec:
   suspend: false
   approvePlan: auto
+  storeReadablePlan: human
   interval: 15m
   path: ./minio
   sourceRef:
