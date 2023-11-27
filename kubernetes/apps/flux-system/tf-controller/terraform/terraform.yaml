@@ -75,8 +75,9 @@ spec:
         - name: sops
           mountPath: /home/runner/.config/sops/age/keys.txt
           subPath: keys.txt
-        - name: bitwarden-data
-          mountPath: /home/runner/.config/Bitwarden CLI/
+        - name: bitwarden-appid
+          mountPath: /.bitwarden/data.json
+          subPath: data.json
       volumes:
         - name: sops
           secret:
@@ -87,3 +88,9 @@ spec:
         - name: bitwarden-data
           persistentVolumeClaim:
             claimName: tf-minio-pvc
+        - name: bitwarden-appid
+          configMap:
+            name: cluster-settings
+            items:
+              - key: BITWARDEN_APP_ID
+                path: data.json
