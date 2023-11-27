@@ -35,6 +35,8 @@ spec:
       error_reporting:
         enabled: false
         send_pii: false
+      redis:
+        host: redis-headless.database.svc.cluster.local.
 
     envValueFrom:
       AUTHENTIK_SECRET_KEY:
