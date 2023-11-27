@@ -67,6 +67,18 @@ resource "random_password" "authentik_secret_key" {
   override_special = "_=+-,~"
 }
 
+resource "random_password" "authentik_pguser" {
+  length           = 12
+  special          = false
+  override_special = "_=+-,~"
+}
+
+resource "random_password" "authentik_pgpass" {
+  length           = 32
+  special          = true
+  override_special = "_=+-,~"
+}
+
 resource "bitwarden_item_login" "authentik" {
   organization_id = var.terraform_organization
   collection_ids  = [var.collection_id]
@@ -82,6 +94,22 @@ resource "bitwarden_item_login" "authentik" {
   field {
     name = "terraform"
     text = "true"
+  }
+}
+
+resource "bitwarden_item_login" "authentik_pgcreds" {
+  organization_id = var.terraform_organization
+  collection_ids  = [var.collection_id]
+
+  name     = "authentik pgcreds"
+  username = random_password.authentik_pguser.result
+  password = random_password.authentik_pgpass.result
+
+  notes = "Used for connecting authentik to the postgres database"
+
+  field {
+    name    = "terraform"
+    boolean = true
   }
 }
 
