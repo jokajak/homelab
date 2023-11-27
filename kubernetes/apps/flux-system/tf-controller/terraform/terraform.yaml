@@ -8,6 +8,8 @@ metadata:
 spec:
   suspend: false
   approvePlan: auto
+  storeReadablePlan: human
+  refreshBeforeApply: true
   interval: 15m
   path: ./bitwarden
   sourceRef:
@@ -53,6 +55,8 @@ spec:
   storeReadablePlan: human
   interval: 15m
   path: ./minio
+  dependsOn:
+    - name: bitwarden
   sourceRef:
     kind: OCIRepository
     name: terraform
