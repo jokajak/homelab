@@ -139,8 +139,8 @@ resource "random_password" "authentik_terraform_password" {
 }
 
 resource "random_password" "authentik_terraform_client_id" {
-  length           = 16
-  special          = false
+  length  = 16
+  special = false
 }
 
 resource "random_password" "authentik_terraform_token" {
@@ -158,12 +158,12 @@ resource "bitwarden_item_login" "authentik_terraform_creds" {
   password = random_password.authentik_terraform_token.result
 
   field {
-    name = "terraform managed"
+    name    = "terraform managed"
     boolean = true
   }
 
   field {
-    name = "user password"
+    name   = "user_pass"
     hidden = random_password.authentik_terraform_password.result
   }
 }
