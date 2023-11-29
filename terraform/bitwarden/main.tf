@@ -132,6 +132,42 @@ resource "bitwarden_item_login" "authentik_redis" {
   }
 }
 
+resource "random_password" "authentik_terraform_password" {
+  length           = 32
+  special          = true
+  override_special = "_=+-,~"
+}
+
+resource "random_password" "authentik_terraform_client_id" {
+  length           = 16
+  special          = false
+}
+
+resource "random_password" "authentik_terraform_token" {
+  length           = 32
+  special          = true
+  override_special = "_=+-,~"
+}
+
+resource "bitwarden_item_login" "authentik_terraform_creds" {
+  organization_id = var.terraform_organization
+  collection_ids  = [var.collection_id]
+
+  name     = "authentik terraform creds"
+  username = random_password.authentik_terraform_client_id.result
+  password = random_password.authentik_terraform_token.result
+
+  field {
+    name = "terraform managed"
+    boolean = true
+  }
+
+  field {
+    name = "user password"
+    hidden = random_password.authentik_terraform_password.result
+  }
+}
+
 ################################################################################
 # weave credentials
 ################################################################################
