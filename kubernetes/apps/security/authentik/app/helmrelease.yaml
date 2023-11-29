@@ -68,13 +68,13 @@ spec:
       enabled: true
       ingressClassName: external-nginx
       annotations:
-        external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
         nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
         nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
       hosts:
-        - host: &host login.${SECRET_DOMAIN}
+        - host: &host auth.${SECRET_DOMAIN}
           paths:
-            - path: /
+            - path: "/"
+              pathType: Prefix
       tls:
         - hosts:
             - *host
