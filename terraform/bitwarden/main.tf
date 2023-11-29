@@ -61,6 +61,18 @@ resource "bitwarden_item_login" "cloudnative_pg" {
 ################################################################################
 # authentik credentials
 ################################################################################
+resource "random_password" "authentik_bootstrap_password" {
+  length           = 32
+  special          = true
+  override_special = "_=+-,~"
+}
+
+resource "random_password" "authentik_bootstrap_token" {
+  length           = 32
+  special          = true
+  override_special = "_=+-,~"
+}
+
 resource "random_password" "authentik_secret_key" {
   length           = 50
   special          = true
@@ -84,7 +96,8 @@ resource "bitwarden_item_login" "authentik" {
   collection_ids  = [var.collection_id]
 
   name     = "authentik credentials"
-  password = random_password.authentik_secret_key.result
+  username = "akadmin"
+  password = random_password.authentik_bootstrap_password.result
 
   uri {
     value = "https://auth.${local.domain}"
@@ -92,8 +105,18 @@ resource "bitwarden_item_login" "authentik" {
   }
 
   field {
-    name = "terraform"
-    text = "true"
+    name    = "terraform managed"
+    boolean = true
+  }
+
+  field {
+    name   = "bootstrap_token"
+    hidden = random_password.authentik_bootstrap_token.result
+  }
+
+  field {
+    name   = "secret_key"
+    hidden = random_password.authentik_secret_key.result
   }
 }
 
@@ -129,42 +152,6 @@ resource "bitwarden_item_login" "authentik_redis" {
   field {
     name = "terraform"
     text = "true"
-  }
-}
-
-resource "random_password" "authentik_terraform_password" {
-  length           = 32
-  special          = true
-  override_special = "_=+-,~"
-}
-
-resource "random_password" "authentik_terraform_client_id" {
-  length  = 16
-  special = false
-}
-
-resource "random_password" "authentik_terraform_token" {
-  length           = 32
-  special          = true
-  override_special = "_=+-,~"
-}
-
-resource "bitwarden_item_login" "authentik_terraform_creds" {
-  organization_id = var.terraform_organization
-  collection_ids  = [var.collection_id]
-
-  name     = "authentik terraform creds"
-  username = random_password.authentik_terraform_client_id.result
-  password = random_password.authentik_terraform_token.result
-
-  field {
-    name    = "terraform managed"
-    boolean = true
-  }
-
-  field {
-    name   = "user_pass"
-    hidden = random_password.authentik_terraform_password.result
   }
 }
 
