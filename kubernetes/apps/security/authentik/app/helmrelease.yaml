@@ -39,9 +39,6 @@ spec:
         host: "authentik-redis.security.svc.cluster.local."
         password: ""
 
-    blueprints:
-      - authentik-blueprint-terraform
-
     envValueFrom:
       AUTHENTIK_SECRET_KEY:
         secretKeyRef:
