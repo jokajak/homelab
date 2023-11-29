@@ -21,7 +21,7 @@ data:
         - model: authentik_core.token
           state: present
           identifiers:
-            identifier: !Env AUTHENTIK_TERRAFORM_CLIENT_ID"
+            identifier: !Env AUTHENTIK_TERRAFORM_CLIENT_ID
           attrs:
             key: !Env AUTHENTIK_TERRAFORM_TOKEN
             user: !KeyOf npe.terraform
