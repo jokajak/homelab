@@ -27,7 +27,7 @@ spec:
   targetNamespace: security
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *appname
+      app.kubernetes.io/name: authentik-redis
   interval: 10m
   path: "./kubernetes/apps/security/authentik/redis"
   prune: true
