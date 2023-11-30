@@ -1,4 +1,9 @@
-variable "terraform_organization" {
+variable "application" {
+  type        = string
+  description = "The name of the oidc client application"
+}
+
+variable "organization_id" {
   type        = string
   description = "Bitwarden organization in which to store items"
 }
