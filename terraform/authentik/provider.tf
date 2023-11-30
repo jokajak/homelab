@@ -11,10 +11,13 @@ data "bitwarden_item_login" "authentik_credentials" {
 }
 
 locals {
-  bootstrap_token = lookup(data.bitwarden_item_login.authentik_credentials.field[*].name, "bootstrap_token", null)
+  bootstrap_token = zipmap(
+    data.bitwarden_item_login.authentik_credentials.field[*].name,
+    data.bitwarden_item_login.authentik_credentials.field[*]
+  )["bootstrap_token"].hidden
 }
 
 provider "authentik" {
-  url   = "https://authentik.${var.domain}"
+  url   = "https://auth.${var.domain}"
   token = local.bootstrap_token
 }
