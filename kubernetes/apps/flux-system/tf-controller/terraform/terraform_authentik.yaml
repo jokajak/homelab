@@ -29,7 +29,7 @@ spec:
     - kind: Secret
       name: bitwarden-outputs
       varsKeys:
-        - authentik_credentials_id:authentik_credentials_id
+        - authentik_credential_id:authentik_credential_id
   runnerPodTemplate:
     spec:
       volumeMounts:
