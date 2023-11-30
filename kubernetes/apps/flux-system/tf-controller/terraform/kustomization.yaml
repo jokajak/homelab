@@ -3,6 +3,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - ./terraform_authentik.yaml
   - ./ocirepository.yaml
   - ./terraform.yaml
   - ./pvc.yaml
