@@ -40,7 +40,7 @@ spec:
           mountPath: /home/runner/.config/sops/age/keys.txt
           subPath: keys.txt
         - name: bitwarden-appid
-          mountPath: /.bitwarden/data.json
+          mountPath: /.bitwarden_cm/data.json
           subPath: data.json
         - name: bitwarden-config-dir
           mountPath: /.bitwarden/
