@@ -42,6 +42,8 @@ spec:
         - name: bitwarden-appid
           mountPath: /.bitwarden/data.json
           subPath: data.json
+        - name: bitwarden-config-dir
+          mountPath: /.bitwarden/
       volumes:
         - name: sops
           secret:
@@ -55,3 +57,5 @@ spec:
             items:
               - key: BITWARDEN_APP_ID
                 path: data.json
+        - name: bitwarden-config-dir
+          emptyDir: {}
