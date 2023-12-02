@@ -46,11 +46,11 @@ resource "authentik_stage_identification" "name" {
   name           = "show-social-logins"
   user_fields    = ["username"]
   sources        = [data.authentik_source.inbuilt.uuid, authentik_source_oauth.github.uuid]
-  password_stage = authentik_stage_password.builtin.id
+  password_stage = authentik_stage_password.inbuilt.id
 }
 
 resource "authentik_flow_stage_binding" "identification" {
-  target = data.authentik_flow.default-authentication-flow.uuid
+  target = data.authentik_flow.default-authentication-flow.id
   stage  = authentik_stage_identification.name.id
   order  = 10
 }
