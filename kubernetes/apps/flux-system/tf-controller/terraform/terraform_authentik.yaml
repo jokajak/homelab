@@ -26,6 +26,7 @@ spec:
         - BW_ORGANIZATION_ID:organization_id
         - BW_COLLECTION_ID:collection_id
         - SECRET_DOMAIN:domain
+        - BW_GITHUB_OAUTH_CREDS_ID:github_oauth_credentials_id
     - kind: Secret
       name: bitwarden-outputs
       varsKeys:
