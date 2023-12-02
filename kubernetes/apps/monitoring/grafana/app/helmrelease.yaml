@@ -36,7 +36,38 @@ spec:
     env:
       GF_EXPLORE_ENABLED: true
       GF_SERVER_ROOT_URL: "https://grafana.${SECRET_DOMAIN}"
+      GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
+      GF_FEATURE_TOGGLES_ENABLE: publicDashboards
+      GF_SECURITY_COOKIE_SAMESITE: grafana
+      GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: "contains(groups[*], 'admins') && 'Admin' || contains(groups[*], 'people') && 'Viewer'"
+    envFromSecrets:
+      - name: grafana-secrets
     grafana.ini:
+      auth:
+        signout_redirect_url: "https://auth.${SECRET_DOMAIN}/application/o/grafana/end-session/"
+        oauth_auto_login: true
+        oauth_allow_insecure_email_lookup: true
+      auth.generic_oauth:
+        name: authentik
+        enabled: true
+        scopes: "openid profile email groups"
+        auth_url: "https://auth.${SECRET_DOMAIN}/application/o/authorize/"
+        token_url: "https://auth.${SECRET_DOMAIN}/application/o/token/"
+        api_url: "https://auth.${SECRET_DOMAIN}/application/o/userinfo/"
+        # Optionally map user groups to Grafana roles
+        role_attribute_path: contains(groups[*], 'admins') && 'Admin' || contains(groups[*], 'people') && 'Viewer'
+        icon: signin
+        empty_scopes: false
+        login_attribute_path: preferred_username
+        groups_attribute_path: groups
+        name_attribute_path: name
+        use_pkce: true
+      auth.basic:
+        enabled: false
+      auth.anonymous:
+        enabled: false
+      news:
+        news_feed_enabled: false
       analytics:
         check_for_updates: false
         check_for_plugin_updates: false
