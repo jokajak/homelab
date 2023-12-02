@@ -16,7 +16,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: external-truenas
+                name: external-router
                 port:
                   number: 443
   tls:
@@ -33,4 +33,4 @@ spec:
     - name: https
       port: 443
   type: ExternalName
-  externalName: router.home.
+  externalName: router.local.
