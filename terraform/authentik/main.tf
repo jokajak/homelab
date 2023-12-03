@@ -37,16 +37,21 @@ data "authentik_flow" "default-authentication-flow" {
   slug = "default-authentication-flow"
 }
 
+data "authentik_flow" "default-source-enrollment" {
+  slug = "default-source-enrollment"
+}
+
 resource "authentik_stage_password" "inbuilt" {
   name     = "show-password-field"
   backends = ["authentik.core.auth.InbuiltBackend"]
 }
 
 resource "authentik_stage_identification" "name" {
-  name           = "show-social-logins"
-  user_fields    = ["username"]
-  sources        = [data.authentik_source.inbuilt.uuid, authentik_source_oauth.github.uuid]
-  password_stage = authentik_stage_password.inbuilt.id
+  name            = "default-authentication-flow"
+  user_fields     = ["username", "email"]
+  sources         = [data.authentik_source.inbuilt.uuid, authentik_source_oauth.github.uuid]
+  password_stage  = authentik_stage_password.inbuilt.id
+  enrollment_flow = data.authentik_flow.default-source-enrollment.id
 }
 
 resource "authentik_flow_stage_binding" "identification" {
