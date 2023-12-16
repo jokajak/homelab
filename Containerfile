@@ -4,7 +4,7 @@ ARG SOPS_VERSION=3.8.0
 # renovate: datasource=github-releases depName=FiloSottile/age extractVersion=^v(?<version>.*)$
 ARG AGE_VERSION=1.1.1
 # renovate: datasource=github-releases depName=fluxcd/flux2 extractVersion=^v(?<version>.*)$
-ARG FLUX_VERSION=v2.1.2
+ARG FLUX_VERSION=v2.2.1
 # renovate: datasource=github-releases depName=derailed/k9s extractVersion=^v(?<version>.*)$
 ARG K9S_VERSION=0.27.4
 # TODO: add renovate for this
