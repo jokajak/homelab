@@ -210,3 +210,42 @@ resource "bitwarden_item_login" "grafana" {
   }
 
 }
+################################################################################
+# emqx credentials
+################################################################################
+resource "random_password" "emqx_admin_password" {
+  length           = 32
+  special          = true
+  override_special = "_=+-,~"
+}
+
+resource "random_password" "emqx_user_password" {
+  length           = 16
+  special          = true
+  override_special = "_=+-,~"
+}
+
+resource "bitwarden_item_login" "emqx" {
+  organization_id = var.terraform_organization
+  collection_ids  = [var.collection_id]
+
+  name     = "emqx credentials"
+  username = "admin"
+  password = random_password.emqx_admin_password.result
+
+  field {
+    name = "terraform"
+    text = "true"
+  }
+
+  uri {
+    value = "https://emqx.${local.domain}"
+    match = "host"
+  }
+
+  field {
+    name   = "user_password"
+    hidden = random_password.emqx_user_password.result
+  }
+
+}
