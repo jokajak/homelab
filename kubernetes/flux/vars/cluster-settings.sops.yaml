@@ -18,6 +18,7 @@ data:
     INTERNAL_PROXY_ADDR: ENC[AES256_GCM,data:fmcVgQkEg7jRIBoWmPk=,iv:64IhmIr0p0/JqilIAVdK3PHmWt61TxQDRQpoV75/qZk=,tag:QaqU+6l2gbXH3RsbQQk7lw==,type:str]
     EXTERNAL_PROXY_ADDR: ENC[AES256_GCM,data:3KZq3q9MD/bq+AJ0zPU=,iv:U5jfmgg1QSaNdZVufgOAv6aKA44invezrw7KOY1EyDc=,tag:mJ5SOFceo4N5ZIwGgRv1Hg==,type:str]
     CLUSTER_LB_UNIFI: ENC[AES256_GCM,data:eRHGYowmNYSIx9UBnOk=,iv:xrBw2mox9QwuglOrfHeQgS+x82p++VcTEfpIt1cQekg=,tag:kxBxR4OgWg1WUYG4NZ6MfA==,type:str]
+    CLUSTER_LB_EMQX: ENC[AES256_GCM,data:BF03ds7p0ddkmcpNQ5E=,iv:L81BpYwPrg1lrqL8tA0bsGosJqh7KHaysUwy+7MSDho=,tag:xqV2X9RJ9OmF83JM4A0stQ==,type:str]
     CONTROLLER_IP_1: ENC[AES256_GCM,data:y1e0uD2xmpRv7zxpTg==,iv:jhVppGVzPxfz0aM4+dQzm8lcbvSiEHIlHscGlolYdnw=,tag:XrPjTD/46/vNeIqzFWNnqQ==,type:str]
     CONTROLLER_IP_2: ENC[AES256_GCM,data:qQNb9DplCvT2xP+IBQ==,iv:Em+vtgwTTnJDlPWRFGNFOXcNKAln69Z9HZ6PSriS4BA=,tag:05+qoTQq5xdXZo6TTK5X2Q==,type:str]
     PIHOLE_ADDR: ENC[AES256_GCM,data:ecy5k/vEaca0itH57gg=,iv:zeMoFRP5ZDYoHP7G1hh4TQSxIFiAXQ2X13sn+W1VWMc=,tag:kFennTGyDIH1gNtFIZ7Dhw==,type:str]
@@ -38,8 +39,8 @@ sops:
             VGhyYjVnaDN1UmlKN1RlRmR5czVxM1UKn36arzluQG8pCgi3oeHIsitieCKn61PF
             vDL7NTRoYB+TV9RS+ReL2zvaleMqM4FHSmc/pzB30bdi3OvMQY3iGA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-11-24T20:43:28Z"
-    mac: ENC[AES256_GCM,data:tsoyGrShdswlQfrTmfHJGRc49t58bI4W7FwGhMAXNhNGz/FmQD4JdhR4HHACB9EsBdLrmgJ3O983ymvB3INYPItr3YJFb1jC5p5ZZ0scA2ENZtYfL0qFXSuUptqlnvJ6Zk3navrtGOU5um1+jMwhi6jaOfNYIhbhN4M25ZbxQ5o=,iv:BWojuuzIJEc9BHrFHu+t5ETTQSNvxdtAZKcR9jjAkeU=,tag:Gea5q2xJ1JnwxtzHxs2rag==,type:str]
+    lastmodified: "2023-12-26T19:47:58Z"
+    mac: ENC[AES256_GCM,data:KYg9yR1XO4f6NCVBU5bU/ttWoIn/UWl7v+IG5ZoDu+0psSjdEuxwi5JSdpLzYOofs1suHxA0rRTVTxcxAxW1Pp/DdiJIeDIXYByZKl0c3AAqIG2/D8KHT/EBIF5WTfqLy5U6yKyOzVRYtJKDuuWjybagK9pQ1Qtw9zwPtd+/flk=,iv:Tf3XXS2WIwMVTlgDSP3Bhs9Eb8xngMI+JFJk8boBsJc=,tag:zT95P9703Azwfc/IEHeS7w==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
-    version: 3.8.0
+    version: 3.8.1
