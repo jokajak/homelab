@@ -57,6 +57,10 @@ spec:
               ttl 30
           - name: prometheus
             parameters: 0.0.0.0:9153
+          - name: hosts
+            configBlock: |-
+              ${PIHOLE_ADDR} nas.${SECRET_DOMAIN}
+              fallthrough
           - name: forward
             parameters: . /etc/resolv.conf
           - name: cache
