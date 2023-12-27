@@ -59,7 +59,7 @@ spec:
             parameters: 0.0.0.0:9153
           - name: hosts
             configBlock: |-
-              ${PIHOLE_ADDR} nas.${SECRET_DOMAIN}
+              ${PIHOLE_ADDR} ${SECRET_NFS_SERVER}
               fallthrough
           - name: forward
             parameters: . /etc/resolv.conf
