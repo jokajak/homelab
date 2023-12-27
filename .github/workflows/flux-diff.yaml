@@ -25,7 +25,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Flux CLI
-        uses: fluxcd/flux2/action@v2
+        uses: fluxcd/flux2/action@main
+        with:
+          version: "latest"
 
       - name: Diff Resources
         uses: allenporter/flux-local/action/diff@c4c5ce19ed7aa792b4ead75776597a82242866c6 # 4.2.1
