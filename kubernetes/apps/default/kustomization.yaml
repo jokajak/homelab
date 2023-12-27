@@ -5,6 +5,7 @@ resources:
   # Pre-flux kustomizations
   - ./namespace.yaml
   # flux kustomizations
+  - ./emqx/ks.yaml
   - ./esphome/ks.yaml
   - ./home-assistant/ks.yaml
   - ./unifi/ks.yaml
