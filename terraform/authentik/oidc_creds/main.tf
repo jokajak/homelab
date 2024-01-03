@@ -9,7 +9,7 @@ resource "random_password" "client_secret" {
   override_special = "_=+-,~"
 }
 
-resource "bitwarden_item_login" "oidc_client" {
+resource "bitwarden_item_login" "this_oidc_client" {
   organization_id = var.organization_id
   collection_ids  = [var.collection_id]
 

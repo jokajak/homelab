@@ -62,3 +62,7 @@ $ sudo umount /mnt/rpi_efi
 ## Flux notes
 
 `flux reconcile source git home-kubernetes` immediately pulls git changes
+
+## References
+
+* <https://github.com/LilDrunkenSmurf/k3s-home-cluster/tree/main> Provided authentik terraform resources

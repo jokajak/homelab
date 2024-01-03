@@ -13,3 +13,6 @@ kubeconfig
 *.key
 # Ansible
 .venv*
+
+# Bitwarden
+.bitwarden

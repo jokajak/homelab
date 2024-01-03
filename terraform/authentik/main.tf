@@ -10,18 +10,6 @@ data "bitwarden_item_login" "oidc_creds" {
   id = var.github_oauth_credentials_id
 }
 
-resource "authentik_source_oauth" "github" {
-  name = "github"
-  slug = "github"
-
-  authentication_flow = data.authentik_flow.default-authorization-flow.id
-  enrollment_flow     = data.authentik_flow.default-authorization-flow.id
-
-  provider_type   = "github"
-  consumer_key    = data.bitwarden_item_login.oidc_creds.username
-  consumer_secret = data.bitwarden_item_login.oidc_creds.password
-}
-
 ################################################################################
 # Flow management
 #
@@ -29,33 +17,44 @@ resource "authentik_source_oauth" "github" {
 ################################################################################
 # Create identification stage with sources and showing a password field
 
+## --------------------------------------------------------------------------------
+## Set username automatically for google logins
+## Per https://goauthentik.io/integrations/sources/google/#username-mapping
+## --------------------------------------------------------------------------------
+resource "authentik_policy_expression" "google_username" {
+  name       = "Set Username"
+  expression = <<EOT
+    email = request.context["prompt_data"]["email"]
+    # Set username to email without domain
+    # request.context["prompt_data"]["username"] = email.split("@")[0]
+    return False
+  EOT
+}
+
+## ------------------------------------------------------------
+## Create a oauth provider for google
+## Support logging in with a google account
+## ------------------------------------------------------------
+resource "authentik_source_oauth" "github" {
+  name = "github"
+  slug = "github"
+
+  authentication_flow = data.authentik_flow.default-authorization-flow.id
+  enrollment_flow     = authentik_flow.enrollment-invitation.uuid
+
+  provider_type   = "github"
+  consumer_key    = data.bitwarden_item_login.oidc_creds.username
+  consumer_secret = data.bitwarden_item_login.oidc_creds.password
+}
+
+data "authentik_scope_mapping" "oauth2" {
+  managed_list = [
+    "goauthentik.io/providers/oauth2/scope-openid",
+    "goauthentik.io/providers/oauth2/scope-email",
+    "goauthentik.io/providers/oauth2/scope-profile"
+  ]
+}
+
 data "authentik_source" "inbuilt" {
   managed = "goauthentik.io/sources/inbuilt"
-}
-
-data "authentik_flow" "default-authentication-flow" {
-  slug = "default-authentication-flow"
-}
-
-data "authentik_flow" "default-source-enrollment" {
-  slug = "default-source-enrollment"
-}
-
-resource "authentik_stage_password" "inbuilt" {
-  name     = "show-password-field"
-  backends = ["authentik.core.auth.InbuiltBackend"]
-}
-
-resource "authentik_stage_identification" "name" {
-  name            = "default-authentication-flow"
-  user_fields     = ["username", "email"]
-  sources         = [data.authentik_source.inbuilt.uuid, authentik_source_oauth.github.uuid]
-  password_stage  = authentik_stage_password.inbuilt.id
-  enrollment_flow = data.authentik_flow.default-source-enrollment.id
-}
-
-resource "authentik_flow_stage_binding" "identification" {
-  target = data.authentik_flow.default-authentication-flow.id
-  stage  = authentik_stage_identification.name.id
-  order  = 10
 }
