@@ -99,3 +99,12 @@ spec:
 
     redis:
       enabled: false
+
+    startupProbe:
+      periodSeconds: 10
+
+    resources:
+      server:
+        requests:
+          memory: 1Gi
+          cpu: 50m
