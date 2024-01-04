@@ -29,7 +29,11 @@ spec:
     adminUser:
       create: true
       createSecret: false
-      username: admin
+      username:
+        valuesFrom:
+          secretKeyRef:
+            name: cluster-user-auth
+            key: username
     ingress:
       enabled: true
       className: internal
