@@ -55,6 +55,18 @@ resource "authentik_policy_binding" "grafana_admins" {
   order  = 0
 }
 
+resource "authentik_policy_binding" "grafana_editors" {
+  target = authentik_application.grafana_application.uuid
+  group  = authentik_group.grafana_editors.id
+  order  = 10
+}
+
+resource "authentik_policy_binding" "grafana_viewers" {
+  target = authentik_application.grafana_application.uuid
+  group  = authentik_group.grafana_viewers.id
+  order  = 20
+}
+
 resource "authentik_group" "monitoring" {
   name         = "Monitoring"
   is_superuser = false
