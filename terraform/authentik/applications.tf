@@ -36,7 +36,7 @@ resource "authentik_application" "grafana_application" {
   open_in_new_tab    = true
   meta_icon          = "https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/grafana.png"
   meta_launch_url    = "https://grafana.${var.domain}/login/generic_oauth"
-  policy_engine_mode = "all"
+  policy_engine_mode = "any"
 }
 
 ## ----------------------------------------
@@ -70,5 +70,5 @@ resource "authentik_application" "weave_application" {
   open_in_new_tab    = true
   meta_icon          = "https://docs.gitops.weave.works/img/weave-logo.png"
   meta_launch_url    = "https://gitops.${var.domain}/login/generic_oauth"
-  policy_engine_mode = "all"
+  policy_engine_mode = "any"
 }
