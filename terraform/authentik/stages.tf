@@ -37,11 +37,6 @@ resource "authentik_stage_prompt" "user-settings" {
     resource.authentik_stage_prompt_field.email.id,
     resource.authentik_stage_prompt_field.locale.id
   ]
-
-  validation_policies = [
-    resource.authentik_policy_expression.user-settings-authorization.id
-  ]
-
 }
 
 resource "authentik_stage_user_write" "user-settings-write" {

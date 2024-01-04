@@ -7,7 +7,7 @@ resource "authentik_stage_prompt_field" "username" {
   required                 = true
   type                     = "text"
   label                    = "Username"
-  initial_value            = <<EOT
+  initial_value            = <<-EOT
   try:
     return user.username
   except:
@@ -23,7 +23,7 @@ resource "authentik_stage_prompt_field" "name" {
   type                     = "text"
   required                 = true
   label                    = "Name"
-  initial_value            = <<EOT
+  initial_value            = <<-EOT
   try:
     return user.name
   except:
@@ -39,7 +39,7 @@ resource "authentik_stage_prompt_field" "email" {
   type                     = "email"
   required                 = true
   label                    = "Email"
-  initial_value            = <<EOT
+  initial_value            = <<-EOT
   try:
     return user.email
   except:
@@ -55,7 +55,7 @@ resource "authentik_stage_prompt_field" "locale" {
   type                     = "ak-locale"
   required                 = true
   label                    = "Locale"
-  initial_value            = <<EOT
+  initial_value            = <<-EOT
   try:
     return user.attributes.get('settings', {}).get('locale', '')
   except:

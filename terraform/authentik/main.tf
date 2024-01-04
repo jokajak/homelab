@@ -23,7 +23,7 @@ data "bitwarden_item_login" "oidc_creds" {
 ## --------------------------------------------------------------------------------
 resource "authentik_policy_expression" "google_username" {
   name       = "Set Username"
-  expression = <<EOT
+  expression = <<-EOT
     email = request.context["prompt_data"]["email"]
     # Set username to email without domain
     # request.context["prompt_data"]["username"] = email.split("@")[0]
@@ -45,6 +45,8 @@ resource "authentik_source_oauth" "github" {
   provider_type   = "github"
   consumer_key    = data.bitwarden_item_login.oidc_creds.username
   consumer_secret = data.bitwarden_item_login.oidc_creds.password
+
+  oidc_jwks_url = "https://token.actions.githubusercontent.com/.well-known/jwks"
 }
 
 data "authentik_scope_mapping" "oauth2" {
