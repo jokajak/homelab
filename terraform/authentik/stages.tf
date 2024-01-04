@@ -10,7 +10,7 @@ resource "authentik_stage_identification" "authentication-identification" {
   show_matched_user  = false
   password_stage     = authentik_stage_password.authentication-password.id
   sources            = [authentik_source_oauth.github.uuid, data.authentik_source.inbuilt.uuid]
-  enrollment_flow    = authentik_flow.enrollment.uuid
+  enrollment_flow    = authentik_flow.enrollment-invitation.uuid
 }
 
 resource "authentik_stage_password" "authentication-password" {
