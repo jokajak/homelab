@@ -1,5 +1,11 @@
 ---
 # defaults file for openwrt
 openwrt_packages:
+- curl
+- kmod-fs-xfs
 - luci-app-advanced-reboot
+- luci-app-ddns
 - luci-mod-rpc
+- lvm2
+- nfs-kernel-server
+- xfs-fsck
