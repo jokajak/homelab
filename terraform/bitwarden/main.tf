@@ -158,8 +158,13 @@ resource "bitwarden_item_login" "authentik_redis" {
 ################################################################################
 # weave credentials
 ################################################################################
+resource "random_password" "weave_username" {
+  length  = 12
+  special = false
+}
+
 resource "random_password" "weave_password" {
-  length           = 50
+  length           = 32
   special          = true
   override_special = "_=+-,~"
 }
@@ -169,11 +174,17 @@ resource "bitwarden_item_login" "weave" {
   collection_ids  = [var.collection_id]
 
   name     = "weave credentials"
+  username = random_password.weave_username.result
   password = random_password.weave_password.result
 
   field {
-    name = "terraform"
-    text = "true"
+    name    = "terraform"
+    boolean = true
+  }
+
+  uri {
+    value = "https://gitops.${local.domain}"
+    match = "host"
   }
 }
 
