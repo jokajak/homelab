@@ -1,0 +1,15 @@
+creation_rules:
+  - path_regex: .*.yaml
+    encrypted_regex: ^(data|stringData)$
+    age: age1pr4mejfd5gvq7fvkhgs534dftetx83564rj4j2y0hat6eucjl49qp60ag5
+  - path_regex: cluster.*\.secret.ya?ml
+    encrypted_regex: "((?i)(displayname|email|pass|ca|id|bootstraptoken|secretboxencryptionsecret|secrets|secrets|password|cert|secret($|[^N])|key|token|^data$|^stringData))"
+    age: age1pr4mejfd5gvq7fvkhgs534dftetx83564rj4j2y0hat6eucjl49qp60ag5
+  - path_regex: age.agekey.enc
+    age: age1pr4mejfd5gvq7fvkhgs534dftetx83564rj4j2y0hat6eucjl49qp60ag5
+  - path_regex: talsecret.yaml
+    encrypted_regex: "((?i)(displayname|email|pass|ca|id|bootstraptoken|secretboxencryptionsecret|secrets|secrets|password|cert|secret($|[^N])|key|token|^data$|^stringData))"
+    age: age1pr4mejfd5gvq7fvkhgs534dftetx83564rj4j2y0hat6eucjl49qp60ag5
+  - path_regex: talconfig.yaml
+    encrypted_regex: "((?i)(displayname|email|pass|ca|id|bootstraptoken|secretboxencryptionsecret|secrets|secrets|password|cert|secret($|[^N])|key|token|^data$|^stringData))"
+    age: age1pr4mejfd5gvq7fvkhgs534dftetx83564rj4j2y0hat6eucjl49qp60ag5
